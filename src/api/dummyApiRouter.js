@@ -19,9 +19,9 @@ const callDummyAPI = ({
 })=>{
     const childRoute = route.substring(route.lastIndexOf("/"), route.length);
     if(data){
-        router[route][childRoute]({data, httpMethod})
+        router[httpMethod][route][childRoute](data)
     }else{
-        router[route][childRoute]({httpMethod});
+        router[httpMethod][route][childRoute]();
     }
 }
 

@@ -2,17 +2,14 @@ import dayjs from "dayjs";
 import db from "../dummyDB";
 import APIErrorHandler from "../../errorHandlers/apiErrorHandlers";
 
-const error = {
+const contactInfo = {
     GET:{
-        "/getLatestErrors":(data)=>{
-
-        },
-        "/searchErrors":(data)=>{
+        "/getLatesContactInfo":(data)=>{
             
-        }
+        },
     },
     POST:{
-        "/addError":(data)=>{
+        "/submitContactInfo":(data)=>{
 
         }
     },
@@ -28,4 +25,4 @@ const error = {
     }
 };
 
-export default error;
+export default contactInfo;

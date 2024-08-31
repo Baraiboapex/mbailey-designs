@@ -1,7 +1,7 @@
-import about from "./dummyApiRoutes/about";
-import blog from "./dummyApiRoutes/blog";
-import errors from "./dummyApiRoutes/errors";
-import projects from "./dummyApiRoutes/projects";
+import about from "./dummyDBRoutes/about";
+import blog from "./dummyDBRoutes/blog";
+import errors from "./dummyDBRoutes/errors";
+import projects from "./dummyDBRoutes/projects";
 
 const dummyDb = {
     about,
