@@ -4,13 +4,27 @@
   </div>
 </template>
 <script setup>
-  import { reactive } from "vue";
-
+  import { reactive, onMounted, computed } from "vue";
+  
   const state = reactive({
-    introData:{},
-    recentProjects:[],
-    recentBlogPosts:[]
+    homeData:{
+      introData:{},
+      recentProjects:[],
+      recentBlogPosts:[]
+    },
   });
 
-  
+  onMounted(()=>{
+    loadData()
+  });
+
+  const load
+
+  const loadData = ({
+    dataToLoad
+  }) =>{
+
+  };
+
+
 </script>
