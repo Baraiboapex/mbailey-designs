@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import db from "../dummyDB";
 import APIErrorHandler from "../../errorHandlers/apiErrorHandlers";
 
@@ -10,15 +9,17 @@ const about = {
                 const hasData = db.about.aboutData.length > 0;
                 
                 if(hasData){
-                    const getCurrentAboutData = currentData.find((aboutData)=>{
-                        return aboutData.dateCreated === dayjs();
+                    const filteredData = getPostsByLatestDates({
+                        arrayToSearch:currentData,
+                        howManyProjectsBackFromLatestDate:1
                     });
-                    resolve(getCurrentAboutData);
+                    
+                    resolve(filteredData);
                 }else{
                     reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
-                    }))
+                    }));
                 }
                 
             });

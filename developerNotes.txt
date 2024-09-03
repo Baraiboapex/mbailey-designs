@@ -1,0 +1,6 @@
+1.) Try to figure out an efficient and accurate regex search for searching posts and other items by either 
+selected parameters or simply by the text entered into the searcvh bar!!!
+
+2.)Get good with the javascript Array.reduce() function! It may come in handy one day!
+
+

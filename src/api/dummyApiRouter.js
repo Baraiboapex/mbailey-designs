@@ -3,13 +3,15 @@ import errors from "./dummyApiRoutes/errors";
 import blog from "./dummyApiRoutes/blog";
 import home from "./dummyApiRoutes/home";
 import projects from "./dummyApiRoutes/projects";
+import contact from "./dummyDBRoutes/contact";
 
 const router = {
     "/api/home":about,
     "/api/errors":errors,
     "/api/blog":blog,
     "/api/home":home,
-    "/api/projects":projects
+    "/api/projects":projects,
+    "/api/contact":contact
 }
 
 const callDummyAPI = ({
