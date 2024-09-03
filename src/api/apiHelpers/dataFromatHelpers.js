@@ -1,6 +1,6 @@
 const formatterHelpers = {
     json:{
-        contentTypeHeader:"application/header",
+        contentTypeHeader:"application/json",
         formatter:async (resp)=>await resp.json()
     },
     xml:{

@@ -1,30 +1,33 @@
 import about from "./dummyApiRoutes/about";
 import errors from "./dummyApiRoutes/errors";
 import blog from "./dummyApiRoutes/blog";
-import home from "./dummyApiRoutes/home";
 import projects from "./dummyApiRoutes/projects";
 import contact from "./dummyDBRoutes/contact";
 
 const router = {
-    "/api/home":about,
+    "/api/about":about,
     "/api/errors":errors,
     "/api/blog":blog,
-    "/api/home":home,
     "/api/projects":projects,
     "/api/contact":contact
-}
+};
 
-const callDummyAPI = ({
+const callDummyAPI = async ({
     route,
     data,
     httpMethod
 })=>{
     const childRoute = route.substring(route.lastIndexOf("/"), route.length);
+
+    let resp = null;
+
     if(data){
-        router[httpMethod][route][childRoute](data)
+        resp = await router[httpMethod][route][childRoute](data)
     }else{
-        router[httpMethod][route][childRoute]();
+        resp = await router[httpMethod][route][childRoute]();
     }
+
+    return resp;
 }
 
 export default callDummyAPI;
