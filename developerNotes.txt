@@ -3,4 +3,3 @@ selected parameters or simply by the text entered into the searcvh bar!!!
 
 2.)Get good with the javascript Array.reduce() function! It may come in handy one day!
 
-

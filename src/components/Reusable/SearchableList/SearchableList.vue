@@ -10,7 +10,12 @@
         <div class="row p-0 mb-2">
             <div class="col-12 p-0">
                 <label>Selected Items</label>
-                <div class="selcted-item-container app-component-border d-flex flex-row justify-content-start align-items-center flex-wrap">
+                <div v-if="hasCustomComponent" :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
+                    <div v-for="item in state.selectedItems" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
+                        <slot name="listItemTemplate" :data="item"></slot>
+                    </div>
+                </div>
+                <div v-else :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
                     <div v-for="item in state.selectedItems" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
                         <button class="p-0 close-button btn btn-danger p-1" @click="(event)=>removedItemFromList(event, item)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-x-square" viewBox="0 0 16 16">
@@ -31,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="row p-0 app-component-border">
+        <div class="row p-0 app-component-border" v-if="canSelectListItems">
             <div class="col-12">
                 <div class="list-container overflow-scroll d-flex w-100 flex-column flex-wrap justify-content-start align-items-start">
                     <div v-if="hasData" class="w-100">
@@ -66,16 +71,19 @@
     ]);
     
     const props = defineProps({
+        canSelectListItems:Boolean,
         listItems:Object,
         searchableField:String,
         selectableField:String,
         listLabel:String,
-        dataLoadingMessage:String
+        dataLoadingMessage:String,
+        listDirection:String
     });
     
     const currentData = computed(()=>props.listItems ? props.listItems : []);
     const hasData = computed(()=> props.listItems !== null && props.listItems.length > 0 && props.listItems !== undefined);
     const showLoading = computed(()=>props.listItems.length < 1);
+    const hasCustomComponent = computed(()=>this.$slots.listItemTemplate !== null && this.$slots.listItemTemplate !== undefined);
 
     onMounted(()=>{
         getData();
