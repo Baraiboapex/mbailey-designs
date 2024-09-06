@@ -10,7 +10,7 @@
         <div class="row p-0 mb-2">
             <div class="col-12 p-0">
                 <label>Selected Items</label>
-                <div v-if="hasCustomComponent" :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
+                <div v-if="doesNotHaveCustomComponent" :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
                     <div v-for="item in state.selectedItems" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
                         <slot name="listItemTemplate" :data="item"></slot>
                     </div>
@@ -38,7 +38,7 @@
         </div>
         <div class="row p-0 app-component-border" v-if="canSelectListItems">
             <div class="col-12">
-                <div class="list-container overflow-scroll d-flex w-100 flex-column flex-wrap justify-content-start align-items-start">
+                <div v-if="hasCustomComponent" class="list-container overflow-scroll d-flex w-100 flex-column flex-wrap justify-content-start align-items-start">
                     <div v-if="hasData" class="w-100">
                         <div v-for="item in state.actualListItems" :class="(state.selectedIndices[item.name] ? 'app-button-small-selected ' : '' ) + 'app-button-small p-3 m-1 w-100'" @click="(event)=>addItemToList(event, item)" >
                             {{ item[searchableField] }}
@@ -56,9 +56,11 @@
     </div>
 </template>
 <script setup>
-    import { reactive, computed, watch, onMounted} from "vue";
+    import { reactive, computed, watch, onMounted, useSlots} from "vue";
 
     import LoadingSign from "./LoadingSign.vue";
+
+    const currentSolts = useSlots();
 
     const state = reactive({
         actualListItems:[],
@@ -71,10 +73,16 @@
     ]);
     
     const props = defineProps({
-        canSelectListItems:Boolean,
+        canSelectListItems:{
+            type:Boolean,
+            default:null
+        },
         listItems:Object,
         searchableField:String,
-        selectableField:String,
+        selectableField:{
+            type:String,
+            default:null
+        },
         listLabel:String,
         dataLoadingMessage:String,
         listDirection:String
@@ -83,7 +91,7 @@
     const currentData = computed(()=>props.listItems ? props.listItems : []);
     const hasData = computed(()=> props.listItems !== null && props.listItems.length > 0 && props.listItems !== undefined);
     const showLoading = computed(()=>props.listItems.length < 1);
-    const hasCustomComponent = computed(()=>this.$slots.listItemTemplate !== null && this.$slots.listItemTemplate !== undefined);
+    const doesNotHaveCustomComponent = computed(()=>currentSolts.listItemTemplate === null && currentSolts.listItemTemplate === undefined);
 
     onMounted(()=>{
         getData();
@@ -116,33 +124,35 @@
         let viewedListItems = determineActualListItemsViewed(searchText);
 
         state.actualListItems = viewedListItems;
+
     };
 
     const addItemToList = (_,item) => {
-        const alreadyHasItem = state.selectedItems.find((btnItem)=> btnItem[props.searchableField] === item[props.searchableField]);
+        if(props.selectableField && canSelectListItems){
+            const alreadyHasItem = state.selectedItems.find((btnItem)=> btnItem[props.searchableField] === item[props.searchableField]);
         
-        if(!alreadyHasItem){
+            if(!alreadyHasItem){
 
-            state.selectedItems.push(item);
+                state.selectedItems.push(item);
 
-            state.selectedIndices[item.name] = true;
+                state.selectedIndices[item.name] = true;
 
-            emittedEvents("listItemsUpdated", state.selectedItems);
-        }else{
-            return;
+                emittedEvents("listItemsUpdated", state.selectedItems);
+            }else{
+                return;
+            }
         }
     };
 
     const removedItemFromList = (_,item) => {
+        if(props.selectableField && canSelectListItems){
+            state.selectedItems = state.selectedItems.filter(btnItem=>{
+                return btnItem[props.selectableField] !== item[props.selectableField];
+            });
 
-        state.selectedItems = state.selectedItems.filter(btnItem=>{
-            return btnItem[props.selectableField] !== item[props.selectableField];
-        });
+            delete state.selectedIndices[item.name];
 
-        delete state.selectedIndices[item.name];
-
-        emittedEvents("listItemsUpdated", state.selectedItems);
+            emittedEvents("listItemsUpdated", state.selectedItems);
+        }
     };
-
-    
 </script>

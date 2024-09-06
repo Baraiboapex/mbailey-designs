@@ -50,12 +50,17 @@ const blog = {
                         Study search algorithms for creating an optimal stored proc
                         for this.
                     */
-                        const filteredData = searchPostsByFields({
-                            arrayToSearch:currentData,
-                            searchText:data.searchText
-                        });
+                        if(data.searchText !== "NULL"){
+                            const filteredData = searchPostsByFields({
+                                arrayToSearch:currentData,
+                                searchText:data.searchText
+                            });
+                            
+                            resolve(filteredData);
+                        }else{
+                            resolve(currentData);
+                        } 
                         
-                        resolve(filteredData);
                     /*
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
@@ -120,7 +125,7 @@ const blog = {
 
                     const filteredData = searchPostsByFields({
                         arrayToSearch:currentData,
-                        searchText:data.searchText,
+                        searchText:data.postId,
                         fieldsToSearchBy:["id"]
                     });
                     
@@ -132,6 +137,12 @@ const blog = {
                     }));
                 }
             });
+        },
+        "/getSingleBlogPost":(data)=>{
+
+        },
+        "/addPostComment":(data)=>{
+            
         }
     },
     POST:{

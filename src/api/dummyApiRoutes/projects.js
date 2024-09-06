@@ -50,12 +50,16 @@ const projects = {
                         Study search algorithms for creating an optimal stored proc
                         for this.
                     */
+                    if(data.searchText !== "NULL"){
                         const filteredData = searchPostsByFields({
                             arrayToSearch:currentData,
                             searchText:data.searchText
                         });
 
                         resolve(filteredData);
+                    }else{
+                        resolve(currentData);
+                    }
                    /*
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
@@ -119,7 +123,7 @@ const projects = {
                 if(hasData){
                     const filteredData = searchPostsByFields({
                         arrayToSearch:currentData,
-                        searchText:data.searchText,
+                        searchText:data.postId,
                         fieldsToSearchBy:["id"]
                     });
 
@@ -132,6 +136,12 @@ const projects = {
                 }
             });
         },
+        "/getSingleProjectPost":(data)=>{
+            
+        },
+        "/addProjectComment":(data)=>{
+            
+        }
     },
     POST:{
         "/addProject":(data)=>{

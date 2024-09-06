@@ -25,7 +25,7 @@ const projects = {
             projectComments:[
                 {
                     id:66789589,
-                    dateOfCreation:new Date("07/12/2024 1:31 pm.").toISOString(),
+                    datePosted:new Date("07/12/2024 1:31 pm.").toISOString(),
                     projectId:867056670,
                     commenter:"matthewpbaileydesigns@gmail.com",
                     content:"Comment on dis"
@@ -47,7 +47,7 @@ const projects = {
             projectComments:[
                 {
                     id:66789589,
-                    dateOfCreation:new Date("07/14/2024 1:31 pm.").toISOString(),
+                    datePosted:new Date("07/14/2024 1:31 pm.").toISOString(),
                     projectId:36545365678,
                     commenter:"matthewpbaileydesigns@gmail.com",
                     content:"Comment on dis"
@@ -58,14 +58,14 @@ const projects = {
     projectComments:[
         {
             id:66789589,
-            dateOfCreation:new Date("07/12/2024 1:31 pm.").toISOString(),
+            datePosted:new Date("07/12/2024 1:31 pm.").toISOString(),
             projectId:867056670,
             commenter:"matthewpbaileydesigns@gmail.com",
             content:"Comment on dis"
         },
         {
             id:66789589,
-            dateOfCreation:new Date("07/14/2024 1:31 pm.").toISOString(),
+            datePosted:new Date("07/14/2024 1:31 pm.").toISOString(),
             projectId:36545365678,
             commenter:"matthewpbaileydesigns@gmail.com",
             content:"Comment on dis"

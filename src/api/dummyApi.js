@@ -1,4 +1,5 @@
 
+import { has } from "lodash";
 import formatHelper from "./apiHelpers/dataFromatHelpers";
 import callDummyAPI from "./dummyApiRouter";
 
@@ -81,14 +82,31 @@ export default {
         otherConfig,
         requestContentType,
         extraDataManipulator
-    })=>callApi({
-        url,
-        body:null,
-        headers,
-        otherConfig,
-        requestContentType,
-        extraDataManipulator
-    }),
+    })=>{
+        const searchParams = url.substring(url.lastIndexOf("?") + 1, url.length);
+        const urlParams = new URLSearchParams(searchParams);
+        const searchParamEntries = urlParams.entries();
+        const hasSearchParamEntries = searchParamEntries.length > 0;
+        const searchParamsQueryObject = {};
+
+        if(hasSearchParamEntries){
+            searchParamEntries.forEach((entry) => {
+                const key = entry[0];
+                const value = entry [1];
+
+                searchParamsQueryObject[key] = value;
+            });
+        }
+        
+        callApi({
+            url,
+            body:(hasSearchParamEntries ? searchParamsQueryObject : null),
+            headers,
+            otherConfig,
+            requestContentType,
+            extraDataManipulator
+        })
+    },
     post:({
         url,
         body,

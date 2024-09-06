@@ -20,7 +20,7 @@
         title:String,
         blurb:String,
         viewMoreButtonText:String,
-        postId:String
+        postId:String,
         parentPostRoute:String
     });
 

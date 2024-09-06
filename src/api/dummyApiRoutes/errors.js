@@ -15,7 +15,8 @@ const error = {
                         arrayToSearch:currentData,
                         howManyProjectsBackFromLatestDate:2
                     });
-                    return filteredData;
+                    
+                    resolve(filteredData);
                 }else{
                     reject(this.HandleError({
                         resCode:404,
@@ -30,12 +31,16 @@ const error = {
                 const hasData = db.errors.errorData.length > 0;
 
                 if(hasData){
-                    const filteredData = searchPostsByFields({
-                        arrayToSearch:currentData,
-                        searchText:data.searchText,
-                    });
+                    if(data.searchText !== "NULL"){
+                        const filteredData = searchPostsByFields({
+                            arrayToSearch:currentData,
+                            searchText:data.searchText,
+                        });
 
-                    return filteredData;
+                        resolve(filteredData);
+                    }else{
+                        resolve(currentData)
+                    }
                 }else{
                     reject(this.HandleError({
                         resCode:404,
