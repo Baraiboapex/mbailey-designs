@@ -10,9 +10,13 @@
                 <div class="col-12">
                     <div class="d-flex flex-column">
                         <div v-for="groupTab in groupTabs" :key="groupTabs.id" class="app-search-group-tab" @click="()=>selectGroupTab(groupTab)">
-                            <span>{{ groupTabs.title }}</span>
+                            <span>{{ groupTab.title }}</span>
                         </div>
-                        
+                        <div v-if="showSelectableTabs" class="search-tabs-data-container">
+                            <div v-for="tab in searchableTabs" :key="tab.id" class="search-tabs-data-tap" @click="()=>filterDataWithTabs(tab)">
+                                {{ tab.title }}
+                            </div>
+                        </div>  
                     </div>
                 </div>
             </div>
@@ -23,8 +27,8 @@
                     </div>
                 </div>
                 <div v-else class="col-12">
-                    <div v-for="selectedTabs in tabs" class="app-search-group-tab" >
-
+                    <div v-for="selectedTab in selectedTabs" :key="selectedTab.id" class="app-search-group-tab" >
+                        <span>{{ selectedTab.title }}</span>
                     </div>
                 </div>
             </div>
@@ -43,6 +47,10 @@
     import api from "../../../api/dummyApi";
 
     import LoadingSign from "../LoadingSign.vue";
+
+    const emittedEvents = defineEmits([
+        "searchTabsChanged"
+    ])
 
     const state = reactive({
         groupTabs:[],
@@ -70,21 +78,30 @@
     }
 
     const loadSearchTabs = () =>{
-        const getSearchableFields = api.get({
+        api.get({
             url:props.getSearchableFieldsApiUrl,
             headers:{
                 "Content-Type":"application/json"
             },
             otherConfig:null,
         }).then((data)=>{
-            state.groupTabs = data;
-            resolve();
+            state.groupTabs = data.map((item)=>item.title);
+            return api.get({
+                url:props.getSearchableFieldDataApiUrl,
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                otherConfig:null,
+            })  
+        }).then((data)=>{
+            state.searchableTabs = data;
         }).catch((err)=>{
-            showPostCommentDataErrorMessage.value = true
+            showPostCommentDataErrorMessage.value = true;
         });
     }
 
-    const fiterDataWithTabs = (selectedTabs) => {
-        
+    const filterDataWithTabs = (selectedTab) => {
+        state.selectedTabs.push(selectedTab);
+        emittedEvents("searchTabsChanged", state.selectedTabs);
     };
 </script>

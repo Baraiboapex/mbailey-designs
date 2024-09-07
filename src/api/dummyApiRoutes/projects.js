@@ -53,7 +53,8 @@ const projects = {
                     if(data.searchText !== "NULL"){
                         const filteredData = searchPostsByFields({
                             arrayToSearch:currentData,
-                            searchText:data.searchText
+                            searchText:data.searchText,
+                            fieldsToSearchBy:[]
                         });
 
                         resolve(filteredData);

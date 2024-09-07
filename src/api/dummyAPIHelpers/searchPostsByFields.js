@@ -4,8 +4,14 @@ function searchPostsByFields({ searchText, arrayToSearch, fieldsToSearchBy }) {
     arrayToSearch.forEach((item) => {
       if (fieldsToSearchBy !== null && fieldsToSearchBy !== undefined) {
         fieldsToSearchBy.forEach((field) => {
-          if (item[field] === searchText) {
-            selectedEntries.push(item);
+          if(item[field].length){
+            item.field.forEach((entryItem)=>{
+              selectedEntries.push(entryItem);
+            });
+          }else{
+            if (item[field] === searchText) {
+              selectedEntries.push(item);
+            }
           }
         });
       } else {
