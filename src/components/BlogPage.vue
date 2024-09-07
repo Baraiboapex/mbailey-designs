@@ -12,24 +12,24 @@
               :apiSearchObject="buildBlogSearchApi"
               @postsLoaded="checkBlogPostsLoaded"
             >
-            <template #default="data">
+            <template #default="slapidata">
               <SearchableList
                   :canSelectListItems="false"
-                  :listItems="data.dataToSearch"
+                  :listItems="slapidata.dataToSearch"
                   searchableField="title"
                   listLabel="Current Blog Posts"
                   dataLoadingMessage="Loading list data..."
                   listDirection="column"
-                  @listSearchTextChanged="data.searchListByApi"
+                  @listSearchTextChanged="slapidata.searchListByApi"
               >
-                <template #listItemTemplate="data">
+                <template #listItemTemplate="sldata">
                   <SearchableListItem
                         :hasImage="false"
                         :hasBlurb="true"
                         :hasViewMoreLink="true"
-                        :title="data.title"
-                        :blurb="data.content"
-                        :postId="data.id"
+                        :title="sldata.title"
+                        :blurb="sldata.content"
+                        :postId="sldata.id"
                         parentPostRoute="/blogpost/"
                         viewMoreButtonText="Read More"
                     />

@@ -3,3 +3,6 @@ selected parameters or simply by the text entered into the searcvh bar!!!
 
 2.)Get good with the javascript Array.reduce() function! It may come in handy one day!
 
+3.) Make it to where the user can only request a comment to be made, and therefore cannot directly post a comment to the page via the web UI. Instead, it sends an email to me
+via a node.js microservice that I will have deployed to fly.io that will send me an email back with a copy to clipboard button attached to it via generated HTML and javascript from the service's code
+that can be used to copy the message off of the email, onto my device clipboard, and then be published via an administration mobile app that I will create after I deem it appropriate for public display. 

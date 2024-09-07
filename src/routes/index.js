@@ -9,15 +9,18 @@ function lazyLoadComponent({
 const routes = [
     {
         path:"/",
-        component:lazyLoadComponent("HomePage")
+        component:lazyLoadComponent("HomePage"),
+        name:"Home"
     },
     {
         path:"/about",
-        component:lazyLoadComponent("AboutPage")
+        component:lazyLoadComponent("AboutPage"),
+        name:"About"
     },
     {
         path:"/blog",
         component:lazyLoadComponent("BlogPage"),
+        name:"Blog",
         children:[
             {
                 path:"/blogpost/:id",
@@ -26,23 +29,25 @@ const routes = [
         ]
     },
     {
-        path:"/errors",
-        component:lazyLoadComponent("ErrorsPage"),
-        meta:{
-            requiresAdmin:true
-        }
-    },
-    {
         path:"/projects",
         component:lazyLoadComponent("ProjectsPage"),
+        name:"Projects",
         children:[
             {
                 path:"/projectpost/:id",
                 component:lazyLoadComponent("SingleProjectPost")
             }
         ]
+    },
+    {
+        path:"/errors",
+        component:lazyLoadComponent("ErrorsPage"),
+        name:"Errors",
+        meta:{
+            requiresAdmin:true
+        }
     }
-]
+];
 
 const router = createRouter({
     history: createWebHistory(),

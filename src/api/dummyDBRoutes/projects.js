@@ -1,12 +1,12 @@
 const projects = {
-    categories:[
+    searchableFieldsTypes:[
         {
-            id:75965689,
-            title:"Not-For-Profit Projects"
+            id:58760,
+            fieldName:"datePosted"
         },
         {
-            id:368456790,
-            title:"Personal Projects"
+            id:685690,
+            fieldName:"categories"
         }
     ],
     projectsData:[

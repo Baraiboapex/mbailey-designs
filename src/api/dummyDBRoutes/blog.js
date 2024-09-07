@@ -1,16 +1,12 @@
 const blog = {
-    categories:[
+    searchableFieldsTypes:[
         {
-            id:75965689,
-            title:"Soft-Skills Growth"
+            id:58760,
+            fieldName:"datePosted"
         },
         {
-            id:368456790,
-            title:"AI"
-        },
-        {
-            id:657567845643,
-            title:"Technical Skills Growth"
+            id:685690,
+            fieldName:"categories"
         }
     ],
     blogData:[

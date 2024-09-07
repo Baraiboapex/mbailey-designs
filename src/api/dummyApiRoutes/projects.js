@@ -139,9 +139,12 @@ const projects = {
         "/getSingleProjectPost":(data)=>{
             
         },
-        "/addProjectComment":(data)=>{
+        "/requestAddProjectComment":(data)=>{
             
-        }
+        },
+        "/getSearchableFields":(data)=>{
+            
+        },
     },
     POST:{
         "/addProject":(data)=>{

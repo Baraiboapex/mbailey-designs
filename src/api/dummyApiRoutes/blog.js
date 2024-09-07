@@ -139,11 +139,14 @@ const blog = {
             });
         },
         "/getSingleBlogPost":(data)=>{
-
-        },
-        "/addPostComment":(data)=>{
             
-        }
+        },
+        "/requestAddPostComment":(data)=>{
+            
+        },
+        "/getSearchableFields":(data)=>{
+            
+        },
     },
     POST:{
         "/addPosts":(data)=>{

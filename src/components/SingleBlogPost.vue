@@ -14,7 +14,9 @@
             </div>
         </div>
         <div v-else class="col-12">
-            
+            <StandardErrorMessage
+                errorMessageText="Could not load blog post"
+            />
         </div>
         <div class="col-12">
             <PostComments
@@ -33,16 +35,16 @@
     import api from "../api/dummyApi";
 
     import PostComments from './Reusable/PostComments.vue';
+    import StandardErrorMessage from "./Reusable/StandardErrorMessage.vue";
 
     const API_GET_REQUEST_ROUTE = "/api/blog/getPostComments";
-    const API_POST_REQUEST_ROUTE="/api/blog/addPostComment";
+    const API_POST_REQUEST_ROUTE="/api/blog/requestAddPostComment";
     const COMMENT_PARENT_POST_ID_FIELD_NAME="postId";
 
     const route = useRoute();
 
     const state = reactive({
         postData:{},
-        comments:[]
     });
 
     const currentBlogPostId = ref("");
