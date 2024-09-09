@@ -9,11 +9,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex flex-column">
-                        <div v-for="groupTab in groupTabs" :key="groupTabs.id" class="app-search-group-tab" @click="()=>selectGroupTab(groupTab)">
+                        <div v-for="groupTab in state.groupTabs" :key="groupTabs.id" class="app-search-group-tab" @click="()=>selectGroupTab(groupTab)">
                             <span>{{ groupTab.title }}</span>
                         </div>
                         <div v-if="showSelectableTabs" class="search-tabs-data-container">
-                            <div v-for="tab in searchableTabs" :key="tab.id" class="search-tabs-data-tap" @click="()=>filterDataWithTabs(tab)">
+                            <div v-for="tab in state.searchableTabs[state.selectedTabs]" :key="tab.id" class="search-tabs-data-tap" @click="()=>filterDataWithTabs(tab)">
                                 {{ tab.title }}
                             </div>
                         </div>  
@@ -50,7 +50,7 @@
 
     const emittedEvents = defineEmits([
         "searchTabsChanged"
-    ])
+    ]);
 
     const state = reactive({
         groupTabs:[],
@@ -61,9 +61,10 @@
     });
 
     const props = defineProps({
-        searchData:Object,
         getSearchableFieldsApiUrl:String,
-        getSearchableFieldDataApiUrl:Array
+        searchDataApiUrl:String,
+        searchData:Object,
+        getSearchableFieldDataApiUrl:Array,
     });
 
     onMounted(()=>{
@@ -75,7 +76,11 @@
 
     const selectGroupTab = (_, groupTab)=>{
         state.selectableTabs = true;
-    }
+    };
+
+    const selectTab = (_, groupTab)=>{
+        state.selectedTab = groupTab.id;
+    };
 
     const loadSearchTabs = () =>{
         api.get({
@@ -101,7 +106,25 @@
     }
 
     const filterDataWithTabs = (selectedTab) => {
-        state.selectedTabs.push(selectedTab);
-        emittedEvents("searchTabsChanged", state.selectedTabs);
+        api.get({
+            url:props.getSearchableFieldsApiUrl,
+            headers:{
+                "Content-Type":"application/json"
+            },
+            otherConfig:null,
+        }).then((data)=>{
+            state.groupTabs = data.map((item)=>item.title);
+            return api.get({
+                url:props.getSearchableFieldDataApiUrl,
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                otherConfig:null,
+            })  
+        }).then((data)=>{
+            state.searchableTabs = data;
+        }).catch((err)=>{
+            showPostCommentDataErrorMessage.value = true;
+        });
     };
 </script>
