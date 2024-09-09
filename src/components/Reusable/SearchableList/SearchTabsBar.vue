@@ -13,7 +13,7 @@
                             <span>{{ groupTab.title }}</span>
                         </div>
                         <div v-if="showSelectableTabs" class="search-tabs-data-container">
-                            <div v-for="tab in state.searchableTabs[state.selectedTabs]" :key="tab.id" class="search-tabs-data-tap" @click="()=>filterDataWithTabs(tab)">
+                            <div v-for="tab in state.searchableTabs[state.selectedTabs]" :key="tab.id" class="search-tabs-data-tap" @click="()=>selectChildTab(tab)">
                                 {{ tab.title }}
                             </div>
                         </div>  
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div v-else class="col-12">
-                    <div v-for="selectedTab in selectedTabs" :key="selectedTab.id" class="app-search-group-tab" >
+                    <div v-for="selectedTab in selectedTabs" @click="()=>removeSelectedTab(selectedTab)" :key="selectedTab.id" class="app-search-group-tab" >
                         <span>{{ selectedTab.title }}</span>
                     </div>
                 </div>
@@ -74,13 +74,23 @@
     const hasSelectedTabs = computed(()=>selectedTabs.length > 0);
     const allSearchDataIsLoaded = computed(()=>groupTabs.length > 0 && selectedTabs.length);
 
-    const selectGroupTab = (_, groupTab)=>{
-        state.selectableTabs = true;
+    const selectGroupTab = (groupTab)=>{
+        state.showSelectableTabs = true;
+        state.selectedGroupTabName = groupTab.title;
     };
 
-    const selectTab = (_, groupTab)=>{
-        state.selectedTab = groupTab.id;
+    const selectChildTab = (childTab)=>{
+        const doesNotHaveTab = selectedTabs.find(tab=>tab.title === childTab.title) === undefined;
+        if(doesNotHaveTab){
+            state.selectedTabs.push(childTab);
+        }else{
+            return;
+        }
     };
+
+    const removeSelectedTab = (selectedTab) => {
+        state.selectedTabs = state.selectedTabs.filter((tab)=> tab.title !== selectedTab.title);
+    }
 
     const loadSearchTabs = () =>{
         api.get({
@@ -120,7 +130,7 @@
                     "Content-Type":"application/json"
                 },
                 otherConfig:null,
-            })  
+            });  
         }).then((data)=>{
             state.searchableTabs = data;
         }).catch((err)=>{
