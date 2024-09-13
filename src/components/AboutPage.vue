@@ -28,7 +28,9 @@
   <script setup>
    import { reactive, onMounted, computed } from "vue";
    import LoadingSign from "./Reusable/LoadingSign.vue";
-   
+   import api from "../api/dummyApi";
+
+   import _ from "lodash";
     const state = reactive({
       introData:{}
     });
@@ -46,11 +48,12 @@
           headers:{
             "Content-Type":"application/json"
           },
+
           requestContentType:"application/json",
         })
       ];
 
-      Promise.all(awaitAll).then(()=>{
+      Promise.all(awaitAll).then((resp)=>{
         const retrievedData = {
           introData:resp[0],
         };

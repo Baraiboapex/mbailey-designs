@@ -1,47 +1,45 @@
-import { createMemoryHistory, createRouter } from 'vue-router';
-
-function lazyLoadComponent({
-    componentName
-}){
-    return import("../components/"+componentName+".vue");
-}
+import { createWebHistory, createRouter } from 'vue-router';
 
 const routes = [
     {
         path:"/",
-        component:lazyLoadComponent("HomePage"),
+        component:import("../components/HomePage.vue"),
+        meta:{},
         name:"Home"
     },
     {
         path:"/about",
-        component:lazyLoadComponent("AboutPage"),
+        component:import("../components/AboutPage.vue"),
+        meta:{},
         name:"About"
     },
     {
         path:"/blog",
-        component:lazyLoadComponent("BlogPage"),
+        component:import("../components/BlogPage.vue"),
         name:"Blog",
+        meta:{},
         children:[
             {
                 path:"/blogpost/:id",
-                component:lazyLoadComponent("SingleBlogPost")
+                component:import("../components/SingleBlogPost.vue")
             }
         ]
     },
     {
         path:"/projects",
-        component:lazyLoadComponent("ProjectsPage"),
+        component:import("../components/ProjectsPage.vue"),
         name:"Projects",
+        meta:{},
         children:[
             {
                 path:"/projectpost/:id",
-                component:lazyLoadComponent("SingleProjectPost")
+                component:import("../components/SingleProjectPost.vue")
             }
         ]
     },
     {
         path:"/errors",
-        component:lazyLoadComponent("ErrorsPage"),
+        component:import("../components/ErrorsPage.vue"),
         name:"Errors",
         meta:{
             requiresAdmin:true

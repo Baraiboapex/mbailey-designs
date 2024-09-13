@@ -5,7 +5,7 @@ import searchPostsByFields from "../dummyAPIHelpers/searchPostsByFields";
 
 const error = {
     GET:{
-        "/getLatestErrors":(data)=>{
+        "/getLatestErrors":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.errors.errorData;
                 const hasData = db.errors.errorData.length > 0;
@@ -18,14 +18,14 @@ const error = {
                     
                     resolve(filteredData);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/searchErrors":(data)=>{
+        "/searchErrors":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.errors.errorData;
                 const hasData = db.errors.errorData.length > 0;
@@ -42,7 +42,7 @@ const error = {
                         resolve(currentData)
                     }
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -51,7 +51,7 @@ const error = {
         }
     },
     POST:{
-        "/addError":(data)=>{
+        "/addError":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.errors.errorData.length > 0;
                 const validateIncommingData = validateAllIncommingApiFields({
@@ -68,7 +68,7 @@ const error = {
                         ...data
                     });
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));

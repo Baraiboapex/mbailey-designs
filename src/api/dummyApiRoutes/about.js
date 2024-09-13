@@ -1,9 +1,10 @@
 import db from "../dummyDB";
 import APIErrorHandler from "../../errorHandlers/apiErrorHandlers";
+import getPostsByLatestDates from "../dummyAPIHelpers/getPostsByLatestDates";
 
 const about = {
     GET:{
-        "/getLatestAboutInfo":(data)=>{
+        "/getLatestAboutInfo":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.about.aboutData;
                 const hasData = db.about.aboutData.length > 0;
@@ -16,12 +17,11 @@ const about = {
                     
                     resolve(filteredData);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
-                
             });
         }
     },

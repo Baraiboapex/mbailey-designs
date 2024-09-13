@@ -5,9 +5,11 @@ import getPostsByLatestDates from "../dummyAPIHelpers/getPostsByLatestDates";
 import getPostsByCategory from "../dummyAPIHelpers/getPostsByCategory";
 import validateAllIncommingApiFields from "../dummyAPIHelpers/dummyApiFieldErrorChecker";
 
+import {v4} from "uuid";
+
 const blog = {
     GET:{
-        "/getLatestBlogPosts":(data)=>{
+        "/getLatestBlogPosts":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
@@ -17,7 +19,7 @@ const blog = {
                         This needs to be an sql stored proc
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
-                        for this.
+                        for 
                     */
                         const filteredData = getPostsByLatestDates({
                             arrayToSearch:currentData,
@@ -28,17 +30,17 @@ const blog = {
                     /*
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
-                        for this.
+                        for 
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/searchPosts":(data)=>{
+        "/searchPosts":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
@@ -48,7 +50,7 @@ const blog = {
                         This needs to be an sql stored proc
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
-                        for this.
+                        for 
                     */
                         if(data.searchText !== "NULL"){
                             const filteredData = searchPostsByFields({
@@ -67,14 +69,14 @@ const blog = {
                         for this.
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getPostsByCategory":(data)=>{
+        "/getPostsByCategory":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
@@ -94,14 +96,14 @@ const blog = {
                         ==========================================================
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getPostCategories":(data)=>{
+        "/getPostCategories":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.blog.categories;
                 const hasData = db.blog.categories.length > 0;
@@ -109,14 +111,14 @@ const blog = {
                 if(hasData){
                     return currentData;
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getPostComments":(data)=>{
+        "/getPostComments":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
@@ -131,25 +133,71 @@ const blog = {
                     
                     resolve(filteredData.blog);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getSingleBlogPost":(data)=>{
-            
+        "/getSingleBlogPost":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = db.blog.blogData;
+                const hasData = db.blog.blogData.length > 0;
+
+                if(hasData){
+                    const getPost = currentData.find((blogPost)=>blogPost.id === data.blogPostId);
+                    if(getPost !== null){
+                        resolve(getPost);
+                    }else{
+                        reject(HandleError({
+                            resCode:404,
+                            errorMessage:"Could Not Find Any Data"
+                        }));
+                    }
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
+                    }));
+                }
+            });
         },
-        "/requestAddPostComment":(data)=>{
-            
+        "/requestAddPostComment":function(data){
+            return new Promise((resolve, reject)=>{
+                const hasData = Object.keys(data).length > 0;
+
+                data.id = v4();
+
+                if(hasData){
+                    console.log("Comment request sent to post blog comment", data);
+                    resolve();
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Comment does not have any data"
+                    }));
+                }
+            });
         },
-        "/getSearchableFields":(data)=>{
-            
+        "/getSearchableFields":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = db.blog.searchableFieldsTypes;
+                const hasData = db.blog.searchableFieldsTypes > 0;
+
+                if(hasData){
+                    resolve(currentData);
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Could not get data"
+                    }));
+                }
+            });
         },
     },
     POST:{
-        "/addPosts":(data)=>{
+        "/addPosts":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.blog.blogData.length > 0;
                 const validateIncommingData = validateAllIncommingApiFields({
@@ -168,7 +216,7 @@ const blog = {
                         postComments:[]
                     });
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -177,7 +225,7 @@ const blog = {
         }
     },
     PUT:{
-        "/editPosts":(data)=>{
+        "/editPosts":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.blog.blogData.length > 0;
 
@@ -189,7 +237,7 @@ const blog = {
 
                      resolve(data);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));

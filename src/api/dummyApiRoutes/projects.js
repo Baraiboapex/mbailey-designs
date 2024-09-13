@@ -7,7 +7,7 @@ import validateAllIncommingApiFields from "../dummyAPIHelpers/dummyApiFieldError
 
 const projects = {
     GET:{
-        "/getLatestProjects":(data)=>{
+        "/getLatestProjects":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.projects.projectsData;
                 const hasData = db.projects.projectsData.length > 0;
@@ -31,14 +31,14 @@ const projects = {
                         for this.
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/searchProjects":(data)=>{
+        "/searchProjects":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.projects.projectsData;
                 const hasData = db.projects.projectsData.length > 0;
@@ -67,14 +67,14 @@ const projects = {
                         for this.
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getProjectsByCategory":(data)=>{
+        "/getProjectsByCategory":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.projects.projectsData;
                 const hasData = db.projects.projectsData.length > 0;
@@ -94,14 +94,14 @@ const projects = {
                         ==========================================================
                     */
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getProjectCategories":(data)=>{
+        "/getProjectCategories":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.projects.categories;
                 const hasData = db.projects.categories > 0;
@@ -109,14 +109,14 @@ const projects = {
                 if(hasData){
                     resolve(currentData);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getProjectComments":(data)=>{
+        "/getProjectComments":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.projects.projectsData;
                 const hasData = db.projects.projectsData.length > 0;
@@ -130,25 +130,71 @@ const projects = {
 
                     resolve(filteredData.projectComments);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
         },
-        "/getSingleProjectPost":(data)=>{
-            
+        "/getSingleProjectPost":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = db.projects.categories;
+                const hasData = db.projects.categories > 0;
+
+                if(hasData){
+                    const getProject = currentData.find((project)=>project.id === data.projectId);
+                    if(getProject !== null){
+                        resolve(getProject);
+                    }else{
+                        reject(HandleError({
+                            resCode:404,
+                            errorMessage:"Could Not Find Any Data"
+                        }));
+                    }
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
+                    }));
+                }
+            });
         },
-        "/requestAddProjectComment":(data)=>{
-            
+        "/requestAddProjectComment":function(data){
+            return new Promise((resolve, reject)=>{
+                const hasData = Object.keys(data).length > 0;
+                
+                data.id = v4();
+
+                if(hasData){
+                    console.log("Comment request sent to post project comment", data);
+                    resolve();
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Comment does not have any data"
+                    }));
+                }
+            });       
         },
-        "/getSearchableFields":(data)=>{
-            
+        "/getSearchableFields":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = db.projects.searchableFieldsTypes;
+                const hasData = db.projects.searchableFieldsTypes > 0;
+
+                if(hasData){
+                    resolve(currentData);
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Could not get data"
+                    }));
+                }
+            });
         },
     },
     POST:{
-        "/addProject":(data)=>{
+        "/addProject":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.projects.projectsData.length > 0;
                 const validateIncommingData = validateAllIncommingApiFields({
@@ -168,7 +214,7 @@ const projects = {
                         categories:[]
                     });
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -177,7 +223,7 @@ const projects = {
         },
     },
     PUT:{
-        "/editProject":(data)=>{
+        "/editProject":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.projects.projectsData.length > 0;
 
@@ -189,7 +235,7 @@ const projects = {
                      currentObject.projectImage = data.projectImage;
 
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));

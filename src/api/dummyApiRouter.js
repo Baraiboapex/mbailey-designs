@@ -18,13 +18,13 @@ const callDummyAPI = async ({
     httpMethod
 })=>{
     const childRoute = route.substring(route.lastIndexOf("/"), route.length);
-
+    const parentRoute = route.substring(0,route.lastIndexOf("/"));
     let resp = null;
 
     if(data){
-        resp = await router[httpMethod][route][childRoute](data)
+        resp = await router[parentRoute][httpMethod.toUpperCase()][childRoute](data)
     }else{
-        resp = await router[httpMethod][route][childRoute]();
+        resp = await router[parentRoute][httpMethod.toUpperCase()][childRoute]();
     }
 
     return resp;

@@ -5,7 +5,7 @@ import dummyApiFieldErrorChecker from "../dummyAPIHelpers/dummyApiFieldErrorChec
 
 const contactInfo = {
     GET:{
-        "/getLatesContactInfo":(data)=>{
+        "/getLatesContactInfo":function(data){
             return new Promise((resolve,reject)=>{
                 const currentData = db.about.aboutData;
                 const hasData = db.about.aboutData.length > 0;
@@ -18,7 +18,7 @@ const contactInfo = {
 
                     resolve(filteredData);
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -27,7 +27,7 @@ const contactInfo = {
         },
     },
     POST:{
-        "/submitContactInfo":(data)=>{
+        "/submitContactInfo":function(data){
             return new Promise((resolve,reject)=>{
                 const checkEmailObject = dummyApiFieldErrorChecker({
                     dataObject:data,
@@ -46,7 +46,7 @@ const contactInfo = {
                         data.emailTemplate
                     );
                 }else{
-                    reject(this.HandleError({
+                    reject(HandleError({
                         resCode:400,
                         errorMessage:"Could Not Send Contact Data"
                     }));

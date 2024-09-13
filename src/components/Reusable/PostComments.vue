@@ -76,7 +76,7 @@
 <script setup>
     import { onMounted, reactive, computed } from 'vue';
 
-    import api from "../api/dummyApi";
+    import api from "../../api/dummyApi";
 
     import StandardErrorMessage from "./StandardErrorMessage.vue";
 

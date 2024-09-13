@@ -12,7 +12,7 @@ function callApi({
     extraDataManipulator
 }){
     return new Promise(async (resolve, reject)=>{
-        const currentConfig = {
+        let currentConfig = {
             url,
         }
 
@@ -26,33 +26,38 @@ function callApi({
             dataFormatter:formatHelper[requestContentType]
         }))
         .then((data)=>{
+            console.log("DATA",data);
             if(extraDataManipulator){
                 resolve(extraDataManipulator(data));
             }else{
+                console.log("TEST",data);
                 resolve(data);
             }
         })
-        .catch()
+        .catch((err)=>{
+            console.log("ERROR: ",err);
+        })
     });
 }
 
 function dummyFetch(url, config){
     return new Promise(async (resolve, reject)=>{
-        console.log("CURRENT CONFIG:");
-        console.table(config);
 
-        window.setTimeout(()=>{
-            const callAPI = callDummyAPI({
-                url,
+        window.setTimeout(async ()=>{
+            const callAPI = await callDummyAPI({
+                route:url,
                 data:(config.body ? config.body : null),
                 httpMethod:(config.method ? config.method : "get")
             });
-
+            
+        console.log("CURRENT CONFIG:");
+            console.log(callAPI);
             if(callAPI.response){
                 resolve({
                     ok:true,
                     json:()=>new Promise ((resolve)=>{
                         const preStringify = JSON.stringify(callAPI);
+                        console.log(preStringify);
                         resolve(JSON.parse(preStringify))
                     })
                 });
@@ -76,36 +81,44 @@ function getResponseData({resp, dataFormatter}){
 }
 
 export default {
-    get:({
+    get:async({
         url,
         headers,
         otherConfig,
         requestContentType,
         extraDataManipulator
     })=>{
-        const searchParams = url.substring(url.lastIndexOf("?") + 1, url.length);
-        const urlParams = new URLSearchParams(searchParams);
-        const searchParamEntries = urlParams.entries();
-        const hasSearchParamEntries = searchParamEntries.length > 0;
-        const searchParamsQueryObject = {};
-
-        if(hasSearchParamEntries){
-            searchParamEntries.forEach((entry) => {
-                const key = entry[0];
-                const value = entry [1];
-
-                searchParamsQueryObject[key] = value;
+        try{
+            const searchParams = url.substring(url.lastIndexOf("?") + 1, url.length);
+            const urlParams = new URLSearchParams(searchParams);
+            const searchParamEntries = urlParams.entries();
+            const hasSearchParamEntries = searchParamEntries.length > 0;
+            const searchParamsQueryObject = {};
+    
+            if(hasSearchParamEntries){
+                searchParamEntries.forEach((entry) => {
+                    const key = entry[0];
+                    const value = entry [1];
+                    
+                    searchParamsQueryObject[key] = value;
+                });
+            }
+            
+            const data = await callApi({
+                url,
+                body:(hasSearchParamEntries ? searchParamsQueryObject : null),
+                headers,
+                otherConfig,
+                requestContentType,
+                extraDataManipulator
             });
+    
+            console.log(data);
+    
+            return data;   
+        }catch(err){
+            console.log(err);
         }
-        
-        callApi({
-            url,
-            body:(hasSearchParamEntries ? searchParamsQueryObject : null),
-            headers,
-            otherConfig,
-            requestContentType,
-            extraDataManipulator
-        })
     },
     post:({
         url,

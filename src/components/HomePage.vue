@@ -18,10 +18,10 @@
               </div>
           </div>
           <div v-else>
-            <LoadingSign
+            <!-- <LoadingSign
               :showLoadingSign="!introDataLoaded",
               loadingMessageText="Loading intro data..."
-            />
+            /> -->
           </div>
         </section>
       </div>
@@ -80,7 +80,7 @@
                   :canSelectListItems="false"
                   :listItems="data.dataToSearch"
                   searchableField="title"
-                  listLabel="Current Blog Posts"
+                  listLabel="Current Projects"
                   dataLoadingMessage="Loading list data..."
                   listDirection="column"
                   @listSearchTextChanged="data.searchListByApi"
@@ -114,6 +114,7 @@
   </div>
 </template>
 <script setup>
+  
   import { reactive, onMounted, computed } from "vue";
   import api from "../api/dummyApi.js";
   import _ from "lodash";
@@ -194,15 +195,16 @@
       })
     ];
 
-    Promise.all(awaitAll).then(()=>{
+    Promise.all(awaitAll).then((resp)=>{
       const retrievedData = {
         introData:resp[0],
         recentProjects:resp[1],
         recentBlogPosts:resp[2]
       };
-      state.homeData.introData = retrievedData.introData;
-      state.homeData.recentProjects = retrievedData.recentProjects;
-      state.homeData.recentBlogPosts = retrievedData.recentBlogPosts;
+      console.log("DATA",retrievedData);
+      state.homeData.introData = {}//retrievedData.introData;
+      state.homeData.recentProjects = []//retrievedData.recentProjects;
+      state.homeData.recentBlogPosts = []//retrievedData.recentBlogPosts;
     });
   }
 

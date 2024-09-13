@@ -58,7 +58,7 @@
 <script setup>
     import { reactive, computed, watch, onMounted, useSlots} from "vue";
 
-    import LoadingSign from "./LoadingSign.vue";
+    import LoadingSign from "../LoadingSign.vue";
 
     const currentSolts = useSlots();
 
