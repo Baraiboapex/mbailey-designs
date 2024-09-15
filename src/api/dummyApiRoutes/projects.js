@@ -24,17 +24,17 @@ const projects = {
                             howManyProjectsBackFromLatestDate:2
                         });
 
-                        resolve(filteredData);
+                        resolve({response:filteredData});
                     /*
                         ==========================================================
                         Study search algorithms for creating an optimal stored proc
                         for this.
                     */
                 }else{
-                    reject(HandleError({
-                        resCode:404,
-                        errorMessage:"Could Not Find Any Data"
-                    }));
+                    // reject(HandleError({
+                    //     resCode:404,
+                    //     errorMessage:"Could Not Find Any Data"
+                    // }));
                 }
             });
         },
@@ -57,9 +57,9 @@ const projects = {
                             fieldsToSearchBy:[]
                         });
 
-                        resolve(filteredData);
+                        resolve({response:filteredData});
                     }else{
-                        resolve(currentData);
+                        resolve({response:currentData});
                     }
                    /*
                         ==========================================================
@@ -67,10 +67,10 @@ const projects = {
                         for this.
                     */
                 }else{
-                    reject(HandleError({
-                        resCode:404,
-                        errorMessage:"Could Not Find Any Data"
-                    }));
+                    // reject(HandleError({
+                    //     resCode:404,
+                    //     errorMessage:"Could Not Find Any Data"
+                    // }));
                 }
             });
         },
@@ -89,7 +89,7 @@ const projects = {
                             postCategories:data.postCategories
                         });
 
-                        resolve(filteredData);
+                        resolve({response:filteredData});
                    /*
                         ==========================================================
                     */
@@ -107,7 +107,7 @@ const projects = {
                 const hasData = db.projects.categories > 0;
 
                 if(hasData){
-                    resolve(currentData);
+                    resolve({response:currentData});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -128,7 +128,7 @@ const projects = {
                         fieldsToSearchBy:["id"]
                     });
 
-                    resolve(filteredData.projectComments);
+                    resolve({response:filteredData.projectComments});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -145,7 +145,7 @@ const projects = {
                 if(hasData){
                     const getProject = currentData.find((project)=>project.id === data.projectId);
                     if(getProject !== null){
-                        resolve(getProject);
+                        resolve({response:getProject});
                     }else{
                         reject(HandleError({
                             resCode:404,
@@ -159,23 +159,6 @@ const projects = {
                     }));
                 }
             });
-        },
-        "/requestAddProjectComment":function(data){
-            return new Promise((resolve, reject)=>{
-                const hasData = Object.keys(data).length > 0;
-                
-                data.id = v4();
-
-                if(hasData){
-                    console.log("Comment request sent to post project comment", data);
-                    resolve();
-                }else{
-                    reject(HandleError({
-                        resCode:404,
-                        errorMessage:"Comment does not have any data"
-                    }));
-                }
-            });       
         },
         "/getSearchableFields":function(data){
             return new Promise((resolve, reject)=>{
@@ -194,6 +177,23 @@ const projects = {
         },
     },
     POST:{
+        "/requestAddProjectComment":function(data){
+            return new Promise((resolve, reject)=>{
+                const hasData = Object.keys(data).length > 0;
+                
+                data.id = GenerateRandomIdInt(9999999999999999999999);
+
+                if(hasData){
+                    console.log("Comment request sent to post project comment", data);
+                    resolve();
+                }else{
+                    reject(HandleError({
+                        resCode:404,
+                        errorMessage:"Comment does not have any data"
+                    }));
+                }
+            });       
+        },
         "/addProject":function(data){
             return new Promise((resolve,reject)=>{
                 const hasData = db.projects.projectsData.length > 0;
@@ -243,10 +243,11 @@ const projects = {
             });
         },
     },
-    HandleError:({
+    HandleError({
         resCode,
         errorMessage
-    })=>{
+    }){
+        console.log(errorMessage);
         const errorHandler = new APIErrorHandler({
             resCode,
             errorMessage

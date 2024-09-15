@@ -16,7 +16,7 @@ const contactInfo = {
                         howManyProjectsBackFromLatestDate:1
                     });
 
-                    resolve(filteredData);
+                    resolve({response:filteredData});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -54,10 +54,10 @@ const contactInfo = {
             });
         }
     },
-    HandleError:({
+    HandleError({
         resCode,
         errorMessage
-    })=>{
+    }){
         const errorHandler = new APIErrorHandler({
             resCode,
             errorMessage

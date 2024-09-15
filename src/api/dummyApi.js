@@ -23,7 +23,7 @@ function callApi({
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
             resp,
-            dataFormatter:formatHelper[requestContentType]
+            dataFormatter:formatHelper[requestContentType].formatter
         }))
         .then((data)=>{
             console.log("DATA",data);
@@ -49,9 +49,7 @@ function dummyFetch(url, config){
                 data:(config.body ? config.body : null),
                 httpMethod:(config.method ? config.method : "get")
             });
-            
-        console.log("CURRENT CONFIG:");
-            console.log(callAPI);
+
             if(callAPI.response){
                 resolve({
                     ok:true,
@@ -62,7 +60,7 @@ function dummyFetch(url, config){
                     })
                 });
             }else{
-                resolve({
+                reject({
                     ok:false,
                     message:"Could not get data"
                 });
@@ -74,8 +72,11 @@ function dummyFetch(url, config){
 function getResponseData({resp, dataFormatter}){
     return new Promise(async (resolve, reject)=>{
         if(resp.ok){
+            console.log(dataFormatter);
             const formattedData = dataFormatter(resp);
             resolve(formattedData);
+        }else{
+            reject();
         }
     });
 }
@@ -89,32 +90,32 @@ export default {
         extraDataManipulator
     })=>{
         try{
+            const baseUrl = url.substring(0,url.includes("?") ? url.lastIndexOf("?") : url.length);
             const searchParams = url.substring(url.lastIndexOf("?") + 1, url.length);
             const urlParams = new URLSearchParams(searchParams);
-            const searchParamEntries = urlParams.entries();
-            const hasSearchParamEntries = searchParamEntries.length > 0;
             const searchParamsQueryObject = {};
-    
-            if(hasSearchParamEntries){
-                searchParamEntries.forEach((entry) => {
-                    const key = entry[0];
-                    const value = entry [1];
-                    
+
+            for (const [key, value] of urlParams.entries()) {
+                if(!key.includes("/")){
                     searchParamsQueryObject[key] = value;
-                });
+                }
             }
             
+            const hasSearchParamEntries = Object.keys(searchParamsQueryObject).length > 0;
+            
+            console.log(searchParams, hasSearchParamEntries, searchParamsQueryObject);
+
             const data = await callApi({
-                url,
+                url:baseUrl,
                 body:(hasSearchParamEntries ? searchParamsQueryObject : null),
                 headers,
                 otherConfig,
                 requestContentType,
                 extraDataManipulator
             });
-    
+            
             console.log(data);
-    
+            
             return data;   
         }catch(err){
             console.log(err);

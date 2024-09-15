@@ -16,7 +16,7 @@
                             <div v-for="tab in state.searchableTabs[state.selectedTabs]" :key="tab.id" class="search-tabs-data-tap" @click="()=>selectChildTab(tab)">
                                 {{ tab.title }}
                             </div>
-                        </div>  
+                        </div>
                     </div>
                 </div>
             </div>

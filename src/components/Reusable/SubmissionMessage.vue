@@ -28,7 +28,7 @@
         return props.submissionWasSuccessful ? 
             `Data for ${props.nameOfDataBeingSubmitted} was successfully submitted` 
             : 
-            `Could not submit data for ${props.nameOfDataBeingSubmitted}`
+            `Could not load data for ${props.nameOfDataBeingSubmitted}`
     });
 
     defineEmits([

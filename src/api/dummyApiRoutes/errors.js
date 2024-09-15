@@ -16,7 +16,7 @@ const error = {
                         howManyProjectsBackFromLatestDate:2
                     });
                     
-                    resolve(filteredData);
+                    resolve({response:filteredData});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -76,10 +76,10 @@ const error = {
             });
         }
     },
-    HandleError:({
+    HandleError({
         resCode,
         errorMessage
-    })=>{
+    }){
         const errorHandler = new APIErrorHandler({
             resCode,
             errorMessage

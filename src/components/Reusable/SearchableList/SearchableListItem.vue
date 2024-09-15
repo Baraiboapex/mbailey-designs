@@ -6,7 +6,7 @@
         <hr/>
         <div class="p-2 d-flex flex-column">
             <h3 class="list-item-title">{{ title }}</h3>
-            <p v-if="hasBlurb" class="list-item-blurb">{{ blurb }}</p>
+            <p v-if="hasBlurb" class="list-item-blurb text-dark">{{ blurb }}</p>
         </div>
         <a @click="navigateToPostPage" v-if="hasViewMoreLink" class="list-item-view-more-button">{{ viewMoreButtonText }}</a>
     </div>    

@@ -15,20 +15,20 @@ const about = {
                         howManyProjectsBackFromLatestDate:1
                     });
                     
-                    resolve(filteredData);
+                    resolve({response:filteredData});
                 }else{
-                    reject(HandleError({
-                        resCode:404,
-                        errorMessage:"Could Not Find Any Data"
-                    }));
+                    // reject(HandleError({
+                    //     resCode:404,
+                    //     errorMessage:"Could Not Find Any Data"
+                    // }));
                 }
             });
         }
     },
-    HandleError:({
+    HandleError({
         resCode,
         errorMessage
-    })=>{
+    }){
         const errorHandler = new APIErrorHandler({
             resCode,
             errorMessage

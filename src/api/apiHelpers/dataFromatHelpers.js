@@ -1,9 +1,9 @@
 const formatterHelpers = {
-    json:{
+    "application/json":{
         contentTypeHeader:"application/json",
         formatter:async (resp)=>await resp.json()
     },
-    xml:{
+    "application/xml":{
         contentTypeHeader:"application/xml",
         formatter:async (resp)=>{
             //TBD

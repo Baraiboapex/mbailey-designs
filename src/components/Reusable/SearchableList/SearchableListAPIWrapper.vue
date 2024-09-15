@@ -7,16 +7,11 @@
                 </button>
                 <slot :dataToSearch="dataToSearch" :searchListByApi="searchListByApi"></slot>
             </div>
-            <div class="d-flex flex-column justify-content-between">
-                <!--
-                    double-check this submission message looks 
-                    aesthetically pleasing being overlaid on top 
-                    of the searchable list
-                -->
+            <div v-else class="d-flex flex-column justify-content-between">
                 <SubmissionMessage
                     :showSubmissionMessage="showSubmissionMessage"
                     :submissionWasSuccessful="submissionWasSuccessful"
-                    :nameOfDataBeingSubmitted="nameOfDataBeingSubmitted"
+                    :nameOfDataBeingSubmitted="searchableListApiTitle"
                     submissionButtonText="Try Again"
                     submissionMessageText="Could not find data"
                     @submission-button-clicked="resetSearch"
@@ -52,8 +47,9 @@
     import SubmissionMessage from "../SubmissionMessage.vue";
 
     const props = defineProps({
-        apiSearchObject:String,
+        apiSearchObject:Object,
         initiatSearchByButtonClick:Boolean,
+        searchableListApiTitle:String,
         loadDataIndependently:{
             type:Boolean,
             default:false
@@ -80,6 +76,7 @@
     
     onMounted(()=>{
         if(props.loadDataIndependently){
+            console.log("Test.");
             searchListByApi({
                 searchText:""
             });
@@ -102,10 +99,11 @@
 
     const searchListByApi = (data) => {
         const {searchText} = data;
-        apiSearchObject({
+        props.apiSearchObject({
             searchText
         }).then((data)=>{
-            dataToSearch.value = data
+            console.log("DATA: ", data);
+            dataToSearch.value = data.response;
             emittedEvents("postsLoaded",true);
         }).catch(()=>{
             showError.value = true;

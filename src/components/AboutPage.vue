@@ -17,7 +17,7 @@
           </div>
           <div v-else>
             <LoadingSign
-              :showLoadingSign="!introDataLoaded",
+              :showLoadingSign="!introDataLoaded"
               loadingMessageText="Loading intro data..."
             />
           </div>
@@ -57,7 +57,7 @@
         const retrievedData = {
           introData:resp[0],
         };
-        state.introData = retrievedData.introData;
+        state.introData = retrievedData.introData.response[0];
       });
   }
   </script>

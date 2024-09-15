@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-12">
-      <h1 class="page-title">Projects</h1>
+      <h1 class="page-title">Blog Posts</h1>
       <hr/>
     </div>
     <div class="col-12">
@@ -40,8 +40,8 @@
           </div>
           <div v-else>
             <LoadingSign
-              :showLoadingSign="!blogPostsLoaded",
-              loadingMessageText="Loading recent project data..."
+              :showLoadingSign="!blogPostsLoaded"
+              loadingMessageText="Loading recent blog post data..."
             />
           </div>
         </section>
