@@ -34,7 +34,7 @@
         </div>
         <div v-else class="d-flex flex-column justify-content-between">
             <LoadingSign
-                :showLoadingSign="showLoadingSign",
+                :showLoadingSign="showLoadingSign"
                 :loadingMessageText="loadingSignText"
             />
         </div>
@@ -60,7 +60,7 @@
         },
         loadingSignText:{
             type:String,
-            default:"Searching Data..."
+            default:"Loading Data..."
         },
         searchButtonText:{
             type:String,
@@ -99,16 +99,19 @@
 
     const searchListByApi = (data) => {
         const {searchText} = data;
+
+        showLoadingSign.value = true;
+
         props.apiSearchObject({
             searchText
         }).then((data)=>{
-            console.log("DATA: ", data);
             dataToSearch.value = data.response;
+            showLoadingSign.value = false;
             emittedEvents("postsLoaded",true);
         }).catch(()=>{
             showError.value = true;
+            showLoadingSign.value = false;
             submissionWasSuccessful.value = false;
-            emittedEvents("postsLoaded",false);
         })
     }
 

@@ -6,7 +6,7 @@
       </div>
       <div class="col-12">
         <section class="page-content">
-          <div v-if="projectPostsLoaded">
+          <div>
             <SearchableListAPIWrapper
               :loadDataIndependently="true"
               :apiSearchObject="buildProjectSearchApi"
@@ -22,15 +22,16 @@
                   listDirection="column"
                   @listSearchTextChanged="data.searchListByApi"
               >
-                <template #listItemTemplate="data">
+                <template #listItemTemplate="{data}">
                   <SearchableListItem
-                        :hasImage="false"
+                        :hasImage="true"
                         :hasBlurb="true"
                         :hasViewMoreLink="true"
+                        :image="data.projectImage"
                         :title="data.title"
-                        :blurb="data.content"
+                        :blurb="data.aboutProject"
                         :postId="data.id"
-                        parentPostRoute="/projectpost/"
+                        parentPostRoute="/projects/singleProject/"
                         viewMoreButtonText="Read More"
                     />
                 </template>
@@ -38,28 +39,16 @@
               </template>
              </SearchableListAPIWrapper>
           </div>
-          <div v-else>
-            <LoadingSign
-              :showLoadingSign="!projectsLoaded"
-              loadingMessageText="Loading recent project data..."
-            />
-          </div>
         </section>
       </div>
     </div>
   </template>
   <script setup>
-  import {ref} from "vue";
   import api from "../api/dummyApi.js";
 
-  import LoadingSign from "./Reusable/LoadingSign.vue";
   import SearchableList from "./Reusable/SearchableList/SearchableList.vue";
   import SearchableListAPIWrapper from "./Reusable/SearchableList/SearchableListAPIWrapper.vue";
   import SearchableListItem from "./Reusable/SearchableList/SearchableListItem.vue";
-
-  const projectPostsLoaded = ref(false);
-
-  const checkProjectsPostsLoaded = (postsLoaded) => {projectPostsLoaded.value = postsLoaded}; 
 
   const buildProjectSearchApi = (data)=>api.get({
     url:"/api/projects/searchProjects"+(

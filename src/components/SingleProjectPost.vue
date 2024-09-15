@@ -33,7 +33,7 @@
 </template>
 <script setup>
     import { useRoute } from 'vue-router';
-    import { onMounted, reactive } from 'vue';
+    import { onMounted, reactive, ref } from 'vue';
 
     import api from "../api/dummyApi";
 

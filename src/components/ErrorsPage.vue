@@ -22,7 +22,7 @@
                 listDirection="column"
                 @listSearchTextChanged="data.searchListByApi"
             >
-              <template #listItemTemplate="data">
+              <template #listItemTemplate="{data}">
                 <SearchableListItem
                       :hasImage="false"
                       :hasBlurb="true"
@@ -30,7 +30,7 @@
                       :title="data.title"
                       :blurb="data.content"
                       :postId="data.id"
-                      parentPostRoute="/projectpost/"
+                      parentPostRoute="/project/"
                       viewMoreButtonText="Read More"
                   />
               </template>

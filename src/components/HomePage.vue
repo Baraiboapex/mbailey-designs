@@ -52,7 +52,7 @@
                         :title="data.title"
                         :blurb="data.content"
                         :postId="data.id"
-                        parentPostRoute="/blogpost/"
+                        parentPostRoute="/blog/singleBlog/"
                         viewMoreButtonText="Read More"
                     />
                 </template>
@@ -89,7 +89,7 @@
                         :title="data.title"
                         :blurb="data.aboutProject"
                         :postId="data.id"
-                        parentPostRoute="/projectpost/"
+                        parentPostRoute="/projects/singleProject/"
                         viewMoreButtonText="Read More"
                     />
                 </template>

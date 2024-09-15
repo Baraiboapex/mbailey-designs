@@ -15,24 +15,30 @@ const routes = [
     },
     {
         path:"/blog",
-        component:async()=>await import("../components/BlogPage.vue"),
         name:"Blog",
         meta:{},
         children:[
             {
-                path:"/blogpost/:id",
+                path:"",
+                component:async()=>await import("../components/BlogPage.vue"),
+            },
+            {
+                path:"singleBlog/:id",
                 component:async()=>await import("../components/SingleBlogPost.vue")
             }
         ]
     },
     {
         path:"/projects",
-        component:async()=>await import("../components/ProjectsPage.vue"),
         name:"Projects",
         meta:{},
         children:[
             {
-                path:"/projectpost/:id",
+                path:"",
+                component:async()=>await import("../components/ProjectsPage.vue"),
+            },
+            {
+                path:"singleProject/:id",
                 component:async()=>await import("../components/SingleProjectPost.vue")
             }
         ]

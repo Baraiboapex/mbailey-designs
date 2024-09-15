@@ -12,7 +12,11 @@
     </div>    
 </template>
 <script setup>
-    defineProps({
+    import { useRouter  } from 'vue-router'
+
+    const router = useRouter();
+
+    const props = defineProps({
         hasImage:Boolean,
         hasBlurb:Boolean,
         hasViewMoreLink:Boolean,
@@ -25,6 +29,6 @@
     });
 
     const navigateToPostPage = ()=>{
-        router.push(parentPostRoute+postId);
+        router.push(props.parentPostRoute+props.postId);
     }
 </script>
