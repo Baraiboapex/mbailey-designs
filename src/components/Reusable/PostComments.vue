@@ -87,12 +87,6 @@
         commentParentPostId:Number,
     });
 
-    onMounted(()=>{
-        loadPostComments({
-            parentPostId:props.commentParentPostId
-        });
-    });
-
     const state = reactive({
         comments:[],
         newCommentData:{
@@ -104,27 +98,35 @@
 
     const showPostCommentDataErrorMessage = ref(false);
     const showCommentAddDialog = ref(false);
-    
-    const postCommentsHaveNoErrors = computed(()=>!showCommentAddDialog);
+    const postCommentsHaveNoErrors = ref(false); 
+
+    onMounted(()=>{
+        loadPostComments({
+            parentPostId:props.commentParentPostId
+        });
+    });
 
     const toggleAddComment = () => {
-        showCommentAddDialog.value = !showCommentAddDialog.value;
+        showCommentAddDialog.value = !showCommentAddDialog.value
     }
 
     const loadPostComments = ({
         parentPostId
     }) => {
         api.get({
-            url:props.apiGetRequestRoute,
-            body:{parentPostId},
+            url:props.apiGetRequestRoute + ("?"+props.commentParentPostIdFieldName+"="+parentPostId),
             headers:{
                 "Content-Type":"application/json"
             },
             otherConfig:null,
+            requestContentType:"application/json",
         }).then((data)=>{
-            state.comments = data;
-            resolve();
+            state.comments = data.response
+            postCommentsHaveNoErrors.value = true;
+            console.log(postCommentsHaveNoErrors.value);
         }).catch((err)=>{
+            console.log(err);
+            postCommentsHaveNoErrors.value = false;
             showPostCommentDataErrorMessage.value = true
         });
     }
@@ -138,6 +140,7 @@
                 "Content-Type":"application/json"
             },
             otherConfig:null,
+            requestContentType:"application/json",
         }).then((data)=>{
             state.comments = data;
             resolve();

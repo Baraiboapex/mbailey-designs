@@ -20,13 +20,15 @@ function callApi({
         if(headers) currentConfig = {...currentConfig, headers};
         if(otherConfig) currentConfig = {...currentConfig, ...otherConfig};
 
+        console.log("CONFIG ====> ",requestContentType, url);
+
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
             resp,
             dataFormatter:formatHelper[requestContentType].formatter
         }))
         .then((data)=>{
-            console.log("DATA",data);
+            console.log("DATA", data);
             if(extraDataManipulator){
                 resolve(extraDataManipulator(data));
             }else{
@@ -35,7 +37,8 @@ function callApi({
             }
         })
         .catch((err)=>{
-            console.log("ERROR: ",err);
+            console.log("ERROR: ", url, err);
+            reject(err);
         })
     });
 }
@@ -49,7 +52,7 @@ function dummyFetch(url, config){
                 data:(config.body ? config.body : null),
                 httpMethod:(config.method ? config.method : "get")
             });
-
+            
             if(callAPI.response){
                 resolve({
                     ok:true,
@@ -105,6 +108,8 @@ export default {
             
             console.log(searchParams, hasSearchParamEntries, searchParamsQueryObject);
 
+            console.log("TEST FOR ===> "+url, searchParamsQueryObject);
+
             const data = await callApi({
                 url:baseUrl,
                 body:(hasSearchParamEntries ? searchParamsQueryObject : null),
@@ -113,12 +118,12 @@ export default {
                 requestContentType,
                 extraDataManipulator
             });
-            
-            console.log(data);
-            
+
+            console.log("FETCHED DATA ==>", data);
+
             return data;   
         }catch(err){
-            console.log(err);
+            console.log("NOPE",err);
         }
     },
     post:({

@@ -118,18 +118,19 @@ const blog = {
         },
         "/getPostComments":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = db.blog.blogCommentData;
+                const hasData = db.blog.blogCommentData.length > 0;
+
+                console.log("DDDD",data);
 
                 if(hasData){
-
                     const filteredData = searchPostsByFields({
                         arrayToSearch:currentData,
-                        searchText:data.postId,
-                        fieldsToSearchBy:["id"]
+                        searchText:parseInt(data.postId),
+                        fieldsToSearchBy:["postId"]
                     });
-                    
-                    resolve(filteredData.blog);
+                    console.log("TTTTT",filteredData)
+                    resolve({response:filteredData});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -143,10 +144,13 @@ const blog = {
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
 
+                console.log("blog data ==> ", currentData[0].id);
+
                 if(hasData){
-                    const getPost = currentData.find((blogPost)=>blogPost.id === data.blogPostId);
+                    const getPost = currentData.find((blogPost)=>blogPost.id === parseInt(data.postId));
                     if(getPost !== null){
-                        resolve(getPost);
+                        console.log("TEST FETCH SINGLE BLOG POST ===> ",{respnse:getPost});
+                        resolve({response:getPost});
                     }else{
                         reject(HandleError({
                             resCode:404,
@@ -167,7 +171,7 @@ const blog = {
                 const hasData = db.blog.searchableFieldsTypes > 0;
 
                 if(hasData){
-                    resolve(currentData);
+                    resolve({response:currentData});
                 }else{
                     reject(HandleError({
                         resCode:404,

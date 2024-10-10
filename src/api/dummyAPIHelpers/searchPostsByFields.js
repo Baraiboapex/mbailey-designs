@@ -22,7 +22,9 @@ function searchPostsByFields({ searchText, arrayToSearch, fieldsToSearchBy }) {
         });
       }
     });
-  
+    
+    console.log(searchText, selectedEntries, fieldsToSearchBy);
+
     return selectedEntries;
   }
 
