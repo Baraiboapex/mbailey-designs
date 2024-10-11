@@ -21,6 +21,8 @@ const callDummyAPI = async ({
     const parentRoute = route.substring(0,route.lastIndexOf("/"));
     let resp = null;
     
+    console.log(router[parentRoute], parentRoute, childRoute);
+
     if(data){
         resp = await router[parentRoute][httpMethod.toUpperCase()][childRoute](data);
     }else{

@@ -121,15 +121,12 @@ const blog = {
                 const currentData = db.blog.blogCommentData;
                 const hasData = db.blog.blogCommentData.length > 0;
 
-                console.log("DDDD",data);
-
                 if(hasData){
                     const filteredData = searchPostsByFields({
                         arrayToSearch:currentData,
                         searchText:parseInt(data.postId),
                         fieldsToSearchBy:["postId"]
                     });
-                    console.log("TTTTT",filteredData)
                     resolve({response:filteredData});
                 }else{
                     reject(HandleError({
@@ -144,12 +141,9 @@ const blog = {
                 const currentData = db.blog.blogData;
                 const hasData = db.blog.blogData.length > 0;
 
-                console.log("blog data ==> ", currentData[0].id);
-
                 if(hasData){
                     const getPost = currentData.find((blogPost)=>blogPost.id === parseInt(data.postId));
                     if(getPost !== null){
-                        console.log("TEST FETCH SINGLE BLOG POST ===> ",{respnse:getPost});
                         resolve({response:getPost});
                     }else{
                         reject(HandleError({
@@ -186,11 +180,11 @@ const blog = {
             return new Promise((resolve, reject)=>{
                 const hasData = Object.keys(data).length > 0;
 
-                data.id = GenerateRandomIdInt(9999999999999999999999);
+                data.id = this.GenerateRandomIdInt(9999999999999999999999);
 
                 if(hasData){
                     console.log("Comment request sent to post blog comment", data);
-                    resolve();
+                    resolve({response:{success:true}});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -224,6 +218,19 @@ const blog = {
                     }));
                 }
             });
+        },
+        HandleError({
+            resCode,
+            errorMessage
+        }){
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
         }
     },
     PUT:{
@@ -247,19 +254,6 @@ const blog = {
             });
         }
     },
-    HandleError({
-        resCode,
-        errorMessage
-    }){
-        const errorHandler = new APIErrorHandler({
-            resCode,
-            errorMessage
-        });
-        return errorHandler;
-    },
-    GenerateRandomIdInt(max) {
-        return Math.floor(Math.random() * max);
-    }
 };
 
 export default blog;

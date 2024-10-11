@@ -31,10 +31,10 @@ const projects = {
                         for this.
                     */
                 }else{
-                    // reject(HandleError({
-                    //     resCode:404,
-                    //     errorMessage:"Could Not Find Any Data"
-                    // }));
+                    reject(this.HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
+                    }));
                 }
             });
         },
@@ -67,10 +67,10 @@ const projects = {
                         for this.
                     */
                 }else{
-                    // reject(HandleError({
-                    //     resCode:404,
-                    //     errorMessage:"Could Not Find Any Data"
-                    // }));
+                    reject(this.HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
+                    }));
                 }
             });
         },
@@ -94,7 +94,7 @@ const projects = {
                         ==========================================================
                     */
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -109,7 +109,7 @@ const projects = {
                 if(hasData){
                     resolve({response:currentData});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -118,19 +118,21 @@ const projects = {
         },
         "/getProjectComments":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.projectsData;
-                const hasData = db.projects.projectsData.length > 0;
+                const currentData = db.projects.projectComments;
+                const hasData = db.projects.projectComments.length > 0;
 
                 if(hasData){
                     const filteredData = searchPostsByFields({
                         arrayToSearch:currentData,
-                        searchText:data.postId,
-                        fieldsToSearchBy:["id"]
+                        searchText:parseInt(data.projectId),
+                        fieldsToSearchBy:["projectId"]
                     });
 
-                    resolve({response:filteredData.projectComments});
+                    console.log(filteredData);
+
+                    resolve({response:filteredData});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -139,21 +141,24 @@ const projects = {
         },
         "/getSingleProjectPost":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.projects.categories;
-                const hasData = db.projects.categories > 0;
+                const currentData = db.projects.projectsData;
+                const hasData = db.projects.projectsData.length > 0;
+
+                console.log("TTTTT", currentData, hasData);
 
                 if(hasData){
-                    const getProject = currentData.find((project)=>project.id === data.projectId);
+                    const getProject = currentData.find((p)=>p.id === parseInt(data.projectId));
+                    console.log("TTRTT",data.projectId);
                     if(getProject !== null){
                         resolve({response:getProject});
                     }else{
-                        reject(HandleError({
+                        reject(this.HandleError({
                             resCode:404,
                             errorMessage:"Could Not Find Any Data"
                         }));
                     }
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -168,24 +173,38 @@ const projects = {
                 if(hasData){
                     resolve(currentData);
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could not get data"
                     }));
                 }
             });
         },
+        HandleError({
+            resCode,
+            errorMessage
+        }){
+            console.log(errorMessage);
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
+        }
     },
     POST:{
         "/requestAddProjectComment":function(data){
             return new Promise((resolve, reject)=>{
                 const hasData = Object.keys(data).length > 0;
                 
-                data.id = GenerateRandomIdInt(9999999999999999999999);
+                data.id = this.GenerateRandomIdInt(9999999999999999999999);
 
                 if(hasData){
                     console.log("Comment request sent to post project comment", data);
-                    resolve();
+                    resolve({response:{success:true}});
                 }else{
                     reject(HandleError({
                         resCode:404,
@@ -221,6 +240,20 @@ const projects = {
                 }
             });
         },
+        HandleError({
+            resCode,
+            errorMessage
+        }){
+            console.log(errorMessage);
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
+        }
     },
     PUT:{
         "/editProject":function(data){
@@ -242,21 +275,21 @@ const projects = {
                 }
             });
         },
-    },
-    HandleError({
-        resCode,
-        errorMessage
-    }){
-        console.log(errorMessage);
-        const errorHandler = new APIErrorHandler({
+        HandleError({
             resCode,
             errorMessage
-        });
-        return errorHandler;
+        }){
+            console.log(errorMessage);
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
+        }
     },
-    GenerateRandomIdInt(max) {
-        return Math.floor(Math.random() * max);
-    }
 };
 
 export default projects;

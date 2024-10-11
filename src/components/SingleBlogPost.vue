@@ -1,14 +1,14 @@
 <template>
      <div class="row post-content-container">
         <div v-if="postLoaded" class="col-12">
-            <div v-if="postHasNoLoadingErrors" class="p-4 d-flex flex-column flex-wrap justify-content-between">
+            <div v-if="postHasNoLoadingErrors" class="p-4 d-flex w-100 flex-column flex-wrap justify-content-between">
                 <div class="d-flex flex-column w-100">
                     <div class="d-flex flex-row w-100">
                         <div class="d-flex justify-content-start">
                             <h2 class="post-title">{{ state.postData.title }}</h2>
                         </div>
                         <div class="d-flex flex-row w-100">
-                            <h2>Date Posted : {{ state.postData.datePosted }}</h2>
+                            <h4>Date Posted : {{ state.postData.datePosted }}</h4>
                         </div>
                     </div>
                     <p class="post-paragraphs">{{ state.postData.content }}</p>
@@ -88,16 +88,13 @@
             }).then((data)=>{
                 postLoaded.value = true;
                 postHasNoLoadingErrors.value = true;
-                console.log("DATA TEST", data);
                 state.postData = data.response;
                 currentBlogPostId.value = data.response.id;
                 resolve();
             }).catch((err)=>{
                 postLoaded.value = true;
                 postHasNoLoadingErrors.value = false;
-                console.log("JOJ", err);
-                reject();
-                throw err;
+                reject(err);
             });
         });
     };

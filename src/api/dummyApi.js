@@ -1,5 +1,3 @@
-
-import { has } from "lodash";
 import formatHelper from "./apiHelpers/dataFromatHelpers";
 import callDummyAPI from "./dummyApiRouter";
 
@@ -7,6 +5,7 @@ function callApi({
     url,
     body,
     headers,
+    method,
     otherConfig,
     requestContentType,
     extraDataManipulator
@@ -16,11 +15,12 @@ function callApi({
             url,
         }
 
+        if(method) currentConfig = {...currentConfig, method};
         if(body) currentConfig = {...currentConfig, body};
         if(headers) currentConfig = {...currentConfig, headers};
         if(otherConfig) currentConfig = {...currentConfig, ...otherConfig};
 
-        console.log("CONFIG ====> ",requestContentType, url);
+        console.log("CONFIG ====> ",requestContentType, url, method);
 
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
@@ -47,27 +47,35 @@ function dummyFetch(url, config){
     return new Promise(async (resolve, reject)=>{
 
         window.setTimeout(async ()=>{
-            const callAPI = await callDummyAPI({
-                route:url,
-                data:(config.body ? config.body : null),
-                httpMethod:(config.method ? config.method : "get")
-            });
-            
-            if(callAPI.response){
-                resolve({
-                    ok:true,
-                    json:()=>new Promise ((resolve)=>{
-                        const preStringify = JSON.stringify(callAPI);
-                        console.log(preStringify);
-                        resolve(JSON.parse(preStringify))
-                    })
+            try{
+                const callAPI = await callDummyAPI({
+                    route:url,
+                    data:(config.body ? config.body : null),
+                    httpMethod:(config.method ? config.method : "get")
                 });
-            }else{
+                
+                if(callAPI.response){
+                    resolve({
+                        ok:true,
+                        json:()=>new Promise ((resolve)=>{
+                            const preStringify = JSON.stringify(callAPI);
+                            console.log(preStringify);
+                            resolve(JSON.parse(preStringify))
+                        })
+                    });
+                }else{
+                    reject({
+                        ok:false,
+                        message:"Could not get data"
+                    });
+                }
+            }catch(err){
                 reject({
                     ok:false,
                     message:"Could not get data"
                 });
             }
+            
         },1500);
     });
 }
@@ -124,6 +132,7 @@ export default {
             return data;   
         }catch(err){
             console.log("NOPE",err);
+            throw err;
         }
     },
     post:({
@@ -137,6 +146,7 @@ export default {
         url,
         body,
         headers,
+        method:"post",
         otherConfig,
         requestContentType,
         extraDataManipulator
@@ -152,6 +162,7 @@ export default {
         url,
         body,
         headers,
+        method:"put",
         otherConfig,
         requestContentType,
         extraDataManipulator
