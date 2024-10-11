@@ -84,7 +84,7 @@
                                 <div v-else class="d-flex flex-row justify-content-start">
                                     <LoadingSign
                                         :showLoadingSign="postcommentRequestSending"
-                                        loadingMessageText="Submitting blog post request..."
+                                        loadingMessageText="Submitting comment request..."
                                     />
                                 </div>
                             </div>
@@ -114,7 +114,7 @@
             <div v-else>
                 <LoadingSign
                     :showLoadingSign="showLoadingSign"
-                    loadingMessageText="Loading blog post..."
+                    loadingMessageText="Loading blog comments..."
                 />
             </div>
         </div>
@@ -186,7 +186,6 @@
         })
     ];
 
-    const showPostCommentDataErrorMessage = ref(false);
     const showCommentAddDialog = ref(false);
     const postCommentsHaveNoErrors = ref(true); 
     const postCommentsLoaded = ref(false);

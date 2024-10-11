@@ -100,6 +100,8 @@
     const searchListByApi = (data) => {
         const {searchText} = data;
 
+        console.log("TEST THIS FETCH LIST LOADER!!!!!");
+
         showLoadingSign.value = true;
 
         props.apiSearchObject({

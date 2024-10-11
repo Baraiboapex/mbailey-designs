@@ -2,6 +2,18 @@
      <div class="row post-content-container">
         <div v-if="postLoaded" class="col-12">
             <div v-if="postHasNoLoadingErrors" class="p-4 d-flex w-100 flex-column flex-wrap justify-content-between">
+                <div class="d-flex justify-content-start mb-2">
+                    <button
+                        class="btn app-submit-button"
+                        @click="goBackToParentPage"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8"/>
+                        </svg>
+                        <span>&nbsp;</span>
+                        Back To Blog Page
+                    </button>
+                </div>
                 <div class="d-flex flex-column w-100">
                     <div class="d-flex flex-row w-100">
                         <div class="d-flex justify-content-start">
@@ -37,7 +49,7 @@
      </div>
 </template>
 <script setup>
-    import { useRoute } from 'vue-router';
+    import { useRoute, useRouter } from 'vue-router';
     import { onMounted, reactive, ref,  computed} from 'vue';
 
     import api from "../api/dummyApi";
@@ -51,6 +63,7 @@
     const API_POST_COMMENT_REQUEST_ROUTE="/api/blog/requestAddPostComment";
     const COMMENT_PARENT_POST_ID_FIELD_NAME="postId";
 
+    const router = useRouter();
     const route = useRoute();
 
     const state = reactive({
@@ -97,5 +110,9 @@
                 reject(err);
             });
         });
+    };
+
+    const goBackToParentPage = () => {
+        router.push({path:"/blog"})
     };
 </script>
