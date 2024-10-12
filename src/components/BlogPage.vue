@@ -14,12 +14,15 @@
             >
             <template #default="slapidata">
               <SearchableList
-                  :canSelectListItems="false"
-                  :listItems="slapidata.dataToSearch"
                   searchableField="title"
                   listLabel="Current Blog Posts"
                   dataLoadingMessage="Loading list data..."
                   listDirection="column"
+                  :canSelectListItems="false"
+                  :listItems="slapidata.dataToSearch"
+                  :showSubmissionMessage="slapidata.showSubmissionMessage"
+                  :submissionWasSuccessful="slapidata.submissionWasSuccessful" 
+                  :showListLoadingSignOnSearch="slapidata.showListLoadingSignOnSearch"
                   @listSearchTextChanged="slapidata.searchListByApi"
               >
                 <template #listItemTemplate="{data}">

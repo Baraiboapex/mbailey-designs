@@ -35,7 +35,6 @@
     }
 
     watch(()=>props.showMessage, (newVal, oldVal)=>{
-        console.log("TEST");
         if(newVal === true){
             showThenHideMessage();
         }

@@ -53,9 +53,17 @@ const projects = {
                     if(data.searchText !== "NULL"){
                         const filteredData = searchPostsByFields({
                             arrayToSearch:currentData,
-                            searchText:data.searchText,
-                            fieldsToSearchBy:[]
+                            searchText:data.searchText
                         });
+
+                        console.log("PROJECTS SEARCH RESULTS", filteredData, data.searchText);
+
+                        if(filteredData.length < 1){
+                            reject(this.HandleError({
+                                resCode:404,
+                                errorMessage:"Could Not Find Requested Blog Post"
+                            }));
+                        }
 
                         resolve({response:filteredData});
                     }else{
@@ -128,8 +136,6 @@ const projects = {
                         fieldsToSearchBy:["projectId"]
                     });
 
-                    console.log(filteredData);
-
                     resolve({response:filteredData});
                 }else{
                     reject(this.HandleError({
@@ -144,11 +150,8 @@ const projects = {
                 const currentData = db.projects.projectsData;
                 const hasData = db.projects.projectsData.length > 0;
 
-                console.log("TTTTT", currentData, hasData);
-
                 if(hasData){
                     const getProject = currentData.find((p)=>p.id === parseInt(data.projectId));
-                    console.log("TTRTT",data.projectId);
                     if(getProject !== null){
                         resolve({response:getProject});
                     }else{
@@ -184,7 +187,6 @@ const projects = {
             resCode,
             errorMessage
         }){
-            console.log(errorMessage);
             const errorHandler = new APIErrorHandler({
                 resCode,
                 errorMessage
@@ -203,7 +205,6 @@ const projects = {
                 data.id = this.GenerateRandomIdInt(9999999999999999999999);
 
                 if(hasData){
-                    console.log("Comment request sent to post project comment", data);
                     resolve({response:{success:true}});
                 }else{
                     reject(HandleError({
@@ -244,7 +245,6 @@ const projects = {
             resCode,
             errorMessage
         }){
-            console.log(errorMessage);
             const errorHandler = new APIErrorHandler({
                 resCode,
                 errorMessage
@@ -279,7 +279,6 @@ const projects = {
             resCode,
             errorMessage
         }){
-            console.log(errorMessage);
             const errorHandler = new APIErrorHandler({
                 resCode,
                 errorMessage

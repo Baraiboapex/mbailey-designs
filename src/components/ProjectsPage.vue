@@ -12,18 +12,20 @@
               :apiSearchObject="buildProjectSearchApi"
               @postsLoaded="checkProjectsPostsLoaded"
             >
-            <template #default="data">
+            <template #default="slapidata">
               <SearchableList
-                  :canSelectListItems="false"
-                  :listItems="data.dataToSearch"
                   searchableField="title"
                   listLabel="Current Project Posts"
                   dataLoadingMessage="Loading list data..."
                   listDirection="column"
-                  @listSearchTextChanged="data.searchListByApi"
+                  :canSelectListItems="false"
+                  :listItems="slapidata.dataToSearch"
+                  :showListLoadingSignOnSearch="slapidata.showListLoadingSignOnSearch"
+                  :showSubmissionMessage="slapidata.showSubmissionMessage"
+                  :submissionWasSuccessful="slapidata.submissionWasSuccessful" 
+                  @listSearchTextChanged="slapidata.searchListByApi"
               >
                 <template #listItemTemplate="{data}">
-                  <div v-for="item in data" :key="item.id" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
                     <SearchableListItem
                           :hasImage="true"
                           :hasBlurb="true"
@@ -35,7 +37,6 @@
                           parentPostRoute="/projects/singleProject/"
                           viewMoreButtonText="Read More"
                       />
-                  </div>
                 </template>
               </SearchableList>
               </template>
@@ -46,6 +47,7 @@
     </div>
   </template>
   <script setup>
+  
   import api from "../api/dummyApi.js";
 
   import SearchableList from "./Reusable/SearchableList/SearchableList.vue";

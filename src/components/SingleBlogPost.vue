@@ -15,12 +15,17 @@
                     </button>
                 </div>
                 <div class="d-flex flex-column w-100">
-                    <div class="d-flex flex-row w-100">
-                        <div class="d-flex justify-content-start">
-                            <h2 class="post-title">{{ state.postData.title }}</h2>
+                    <div class="d-flex flex-row justify-content-end w-100">
+                        <div class="d-flex align-items-start">
+                            <h2 class="post-title ">{{ state.postData.title }}</h2>
                         </div>
-                        <div class="d-flex flex-row w-100">
+                        <div class="d-flex flex-column w-100 align-items-end">
+                            <div>
                             <h4>Date Posted : {{ state.postData.datePosted }}</h4>
+                            <div class="d-flex flex-wrap">
+                                <span v-for="categroy in state.postData.categroies" :key="categroy.id">{{ categroy.title }}</span>
+                            </div>
+                            </div>
                         </div>
                     </div>
                     <p class="post-paragraphs">{{ state.postData.content }}</p>

@@ -20,19 +20,15 @@ function callApi({
         if(headers) currentConfig = {...currentConfig, headers};
         if(otherConfig) currentConfig = {...currentConfig, ...otherConfig};
 
-        console.log("CONFIG ====> ",requestContentType, url, method);
-
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
             resp,
             dataFormatter:formatHelper[requestContentType].formatter
         }))
         .then((data)=>{
-            console.log("DATA", data);
             if(extraDataManipulator){
                 resolve(extraDataManipulator(data));
             }else{
-                console.log("TEST",data);
                 resolve(data);
             }
         })
@@ -59,7 +55,6 @@ function dummyFetch(url, config){
                         ok:true,
                         json:()=>new Promise ((resolve)=>{
                             const preStringify = JSON.stringify(callAPI);
-                            console.log(preStringify);
                             resolve(JSON.parse(preStringify))
                         })
                     });
@@ -83,7 +78,6 @@ function dummyFetch(url, config){
 function getResponseData({resp, dataFormatter}){
     return new Promise(async (resolve, reject)=>{
         if(resp.ok){
-            console.log(dataFormatter);
             const formattedData = dataFormatter(resp);
             resolve(formattedData);
         }else{
@@ -114,10 +108,6 @@ export default {
             
             const hasSearchParamEntries = Object.keys(searchParamsQueryObject).length > 0;
             
-            console.log(searchParams, hasSearchParamEntries, searchParamsQueryObject);
-
-            console.log("TEST FOR ===> "+url, searchParamsQueryObject);
-
             const data = await callApi({
                 url:baseUrl,
                 body:(hasSearchParamEntries ? searchParamsQueryObject : null),
@@ -126,8 +116,6 @@ export default {
                 requestContentType,
                 extraDataManipulator
             });
-
-            console.log("FETCHED DATA ==>", data);
 
             return data;   
         }catch(err){

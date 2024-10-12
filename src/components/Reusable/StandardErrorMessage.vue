@@ -43,7 +43,6 @@
     }
 
     watch(()=>props.showMessage, (newVal, oldVal)=>{
-        console.log("TEST DIS");
         if(newVal === true){
             showThenHideMessage();
         }

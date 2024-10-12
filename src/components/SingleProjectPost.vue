@@ -107,12 +107,11 @@
             }).then((data)=>{
                 postLoaded.value = true;
                 postHasNoLoadingErrors.value = true;
-                console.log(data);
                 state.postData = data.response;
                 currentProjectPostId.value = data.response.id;
                 resolve();
             }).catch((err)=>{
-                console.log("JJJ")
+                console.log("Error", err);
                 postLoaded.value = true;
                 postHasNoLoadingErrors.value = false;
             });
@@ -120,6 +119,6 @@
     };
 
     const goBackToParentPage = () => {
-        router.push({path:"/blog"})
+        router.push({path:"/projects"})
     };
 </script>

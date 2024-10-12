@@ -229,6 +229,7 @@
             otherConfig:null,
             requestContentType:"application/json",
         }).then((data)=>{
+            console.log(data.response);
             state.comments = data.response;
             postCommentsHaveNoErrors.value = true;
             postCommentsLoaded.value = true;

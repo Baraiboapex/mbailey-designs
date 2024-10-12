@@ -89,6 +89,8 @@
                         :title="data.title"
                         :blurb="data.aboutProject"
                         :postId="data.id"
+                        :showSubmissionMessage="data.showSubmissionMessage"
+                        :submissionWasSuccessful="data.submissionWasSuccessful" 
                         parentPostRoute="/projects/singleProject/"
                         viewMoreButtonText="Read More"
                     />
@@ -168,7 +170,6 @@
       const retrievedData = {
         introData:resp[0],
       };
-      console.log(retrievedData);
       state.homeData.introData = retrievedData.introData.response[0]
     });
   }

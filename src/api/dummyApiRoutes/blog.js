@@ -31,7 +31,7 @@ const blog = {
                         for 
                     */
                 }else{
-                    // reject(HandleError({
+                    // reject(this.HandleError({
                     //     resCode:404,
                     //     errorMessage:"Could Not Find Any Data"
                     // }));
@@ -53,9 +53,16 @@ const blog = {
                         if(data.searchText !== "NULL"){
                             const filteredData = searchPostsByFields({
                                 arrayToSearch:currentData,
-                                searchText:data.searchText
+                                searchText:data.searchText,
                             });
                             
+                            if(filteredData.length < 1){
+                                reject(this.HandleError({
+                                    resCode:404,
+                                    errorMessage:"Could Not Find Requested Blog Post"
+                                }));
+                            }
+
                             resolve({response:filteredData});
                         }else{
                             resolve({response:currentData});
@@ -67,7 +74,7 @@ const blog = {
                         for this.
                     */
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -94,7 +101,7 @@ const blog = {
                         ==========================================================
                     */
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -109,7 +116,7 @@ const blog = {
                 if(hasData){
                     resolve({response:currentData});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -129,7 +136,7 @@ const blog = {
                     });
                     resolve({response:filteredData});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -146,13 +153,13 @@ const blog = {
                     if(getPost !== null){
                         resolve({response:getPost});
                     }else{
-                        reject(HandleError({
+                        reject(this.HandleError({
                             resCode:404,
                             errorMessage:"Could Not Find Any Data"
                         }));
                     }
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -167,13 +174,26 @@ const blog = {
                 if(hasData){
                     resolve({response:currentData});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could not get data"
                     }));
                 }
             });
         },
+        HandleError({
+            resCode,
+            errorMessage
+        }){
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
+        }
     },
     POST:{
         "/requestAddPostComment":function(data){
@@ -183,10 +203,9 @@ const blog = {
                 data.id = this.GenerateRandomIdInt(9999999999999999999999);
 
                 if(hasData){
-                    console.log("Comment request sent to post blog comment", data);
                     resolve({response:{success:true}});
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Comment does not have any data"
                     }));
@@ -212,7 +231,7 @@ const blog = {
                         postComments:[]
                     });
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
@@ -246,12 +265,25 @@ const blog = {
 
                      resolve(data);
                 }else{
-                    reject(HandleError({
+                    reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });
+        },
+        HandleError({
+            resCode,
+            errorMessage
+        }){
+            const errorHandler = new APIErrorHandler({
+                resCode,
+                errorMessage
+            });
+            return errorHandler;
+        },
+        GenerateRandomIdInt(max) {
+            return Math.floor(Math.random() * max);
         }
     },
 };
