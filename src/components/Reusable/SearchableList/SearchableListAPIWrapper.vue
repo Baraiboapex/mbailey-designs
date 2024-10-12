@@ -76,10 +76,12 @@
     
     onMounted(()=>{
         if(props.loadDataIndependently){
-            console.log("Test.");
+            console.log("Test This Thing !!!!!!!");
             searchListByApi({
                 searchText:""
             });
+        }else{
+            console.log("NOPE");
         }
     });
 
@@ -110,7 +112,8 @@
             dataToSearch.value = data.response;
             showLoadingSign.value = false;
             emittedEvents("postsLoaded",true);
-        }).catch(()=>{
+        }).catch((err)=>{
+            console.log("SEARCH ERROR!!!",err);
             showError.value = true;
             showLoadingSign.value = false;
             submissionWasSuccessful.value = false;

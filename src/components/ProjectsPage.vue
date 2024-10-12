@@ -23,17 +23,19 @@
                   @listSearchTextChanged="data.searchListByApi"
               >
                 <template #listItemTemplate="{data}">
-                  <SearchableListItem
-                        :hasImage="true"
-                        :hasBlurb="true"
-                        :hasViewMoreLink="true"
-                        :image="data.projectImage"
-                        :title="data.title"
-                        :blurb="data.aboutProject"
-                        :postId="data.id"
-                        parentPostRoute="/projects/singleProject/"
-                        viewMoreButtonText="Read More"
-                    />
+                  <div v-for="item in data" :key="item.id" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
+                    <SearchableListItem
+                          :hasImage="true"
+                          :hasBlurb="true"
+                          :hasViewMoreLink="true"
+                          :image="data.projectImage"
+                          :title="data.title"
+                          :blurb="data.aboutProject"
+                          :postId="data.id"
+                          parentPostRoute="/projects/singleProject/"
+                          viewMoreButtonText="Read More"
+                      />
+                  </div>
                 </template>
               </SearchableList>
               </template>

@@ -11,9 +11,11 @@
             <div class="col-12 p-0">
                 <label>Selected Items</label>
                 <div v-if="doesNotHaveCustomComponent" :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
-                    <div v-for="item in state.selectedItems" :key="item.id" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
+                    <!--Make it to where the list is located on the outside of this component-->
+                    <slot name="listItemTemplate" :data="state.selectedItems"></slot>
+                    <!-- <div v-for="item in state.selectedItems" :key="item.id" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
                         <slot name="listItemTemplate" :data="item"></slot>
-                    </div>
+                    </div> -->
                 </div>
                 <div v-else :class="'d-flex selcted-item-container app-component-border justify-content-start align-items-center flex-wrap'+'flex-'+listDirection + 'list-item-as-'+listDirection">
                     <div v-for="item in state.selectedItems" :key="item.id" class="app-button-small p-1 m-1 d-flex flex-row text-overflow-elipses">
@@ -32,7 +34,7 @@
             <div class="col-12 p-0">
                 <div class="field-group mt-2 mb-2">
                     <label for="subject">Search List Items</label>
-                    <input type="text" :disabled="showLoading" name="subject" class="w-100 m-1 text-input" @keyup="((event)=>searchItems(event))"/>
+                    <input type="text" :disabled="showLoading" name="subject" class="w-100 m-1 text-input" @input="((event)=>searchItems(event))"/>
                 </div>
             </div>
         </div>
@@ -74,7 +76,8 @@
     });
 
     const emittedEvents = defineEmits([
-        "listItemsUpdated"
+        "listItemsUpdated",
+        "listSearchTextChanged"
     ]);
     
     const props = defineProps({
@@ -123,11 +126,13 @@
     };
 
     const searchItems = (event) => {
+
         let searchText = event.target.value;
         let viewedListItems = determineActualListItemsViewed(searchText);
 
         state.actualListItems = viewedListItems;
 
+        //emittedEvents("listSearchTextChanged",{searchText});
     };
 
     const addItemToList = (_,item) => {
