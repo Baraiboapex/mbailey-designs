@@ -14,13 +14,7 @@ const blog = {
             id:75306345875869,
             datePosted:new Date("07/12/2024 1:31 pm.").toISOString(),
             title:"The difficulty of marketting yourself and maintaining a positive outlook as an autistic developer when you are unemployed",
-            content:`Welp, there you are. Autistic, struggling to get out of your parent's basement, probably doubting yourself because
-            you *FEEL* like your life sucks. Your contract or last gig ended because you were layed off due to circumstances beyond your control
-            You're either collecting unemployment (after fighting to get it at least in the state of Florida) while at the same time trying to find 
-            some desperate way to impress some chick you met a little while back about your "awesome career choice" (yeah good luck with that considering your circumstances ;) )  
-            you feel like a failure at life, and a *ehem* "Gil Gunderson", who by the way, is one of my favorite characters from the Simpsons because his situations are just 
-            so hilariously (and unrealistically) unfortunate that you often wonder when he's ever going to get a break (I can do a near-perfect impression of him, but I'm not 
-            going to upload an audio file any time soon, sorry).`,
+            content:`Help`,
             categroies:[
                 {
                     id:75965689,

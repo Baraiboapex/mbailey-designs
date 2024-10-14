@@ -35,6 +35,7 @@
               searchableListApiTitle="current blog posts"
             >
             <template #default="data">
+              <!--This is wrong. These need to be normal list components to show the latest posts-->
               <SearchableList
                   :canSelectListItems="false"
                   :listItems="data.dataToSearch"
@@ -65,6 +66,7 @@
     <div class="row">
       <div class="col-12">
         <section class="page-content">
+          <!--This is wrong. These need to be normal list components to show the latest posts-->
           <SearchableListAPIWrapper
               :apiSearchObject="buildProjectSearchApi"
               :loadDataIndependently="true"
@@ -170,7 +172,7 @@
       const retrievedData = {
         introData:resp[0],
       };
-      state.homeData.introData = retrievedData.introData.response[0]
+      state.homeData.introData = retrievedData.introData.response[0];
     });
   }
 

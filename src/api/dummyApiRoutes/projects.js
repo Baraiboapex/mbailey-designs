@@ -3,6 +3,7 @@ import APIErrorHandler from "../../errorHandlers/apiErrorHandlers";
 import searchPostsByFields from "../dummyAPIHelpers/searchPostsByFields";
 import getPostsByLatestDates from "../dummyAPIHelpers/getPostsByLatestDates";
 import getPostsByCategory from "../dummyAPIHelpers/getPostsByCategory";
+import getAllPostFieldValuesByFieldType from "../dummyAPIHelpers/getAllPostFieldValuesByFieldType";
 import validateAllIncommingApiFields from "../dummyAPIHelpers/dummyApiFieldErrorChecker";
 
 const projects = {
@@ -179,6 +180,33 @@ const projects = {
                     reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could not get data"
+                    }));
+                }
+            });
+        },
+        "/getProjectFieldValues":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = db.projects.searchableFieldsTypes;
+                const hasData = db.projects.searchableFieldsTypes > 0;
+
+                const postFieldValues = getAllPostFieldValuesByFieldType({
+                    itemsArray:currentData,
+                    fieldName:data.fieldName
+                });
+
+                if(hasData){
+                    if(postFieldValues.length > 1){
+                        resolve({response:postFieldValues})
+                    }else{
+                        reject(this.HandleError({
+                            resCode:404,
+                            errorMessage:"Could Not Get Data For Selected Field"
+                        }));
+                    }
+                }else{
+                    reject(this.HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Get Data For Selected Field"
                     }));
                 }
             });
