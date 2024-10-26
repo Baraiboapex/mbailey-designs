@@ -26,80 +26,37 @@
         </section>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+    <div class="row pt-5">
+      <div class="col-12 pt-5">
         <section class="page-content">
-          <SearchableListAPIWrapper
-              :apiSearchObject="buildBlogSearchApi"
-              :loadDataIndependently="true"
-              searchableListApiTitle="current blog posts"
-            >
-            <template #default="data">
-              <!--This is wrong. These need to be normal list components to show the latest posts-->
-              <SearchableList
-                  :canSelectListItems="false"
-                  :listItems="data.dataToSearch"
-                  searchableField="title"
-                  listLabel="Current Blog Posts"
-                  dataLoadingMessage="Loading list data..."
-                  listDirection="column"
-                  @listSearchTextChanged="data.searchListByApi"
-              >
-                <template #listItemTemplate="{data}">
-                  <SearchableListItem
-                        :hasImage="false"
-                        :hasBlurb="true"
-                        :hasViewMoreLink="true"
-                        :title="data.title"
-                        :blurb="data.content"
-                        :postId="data.id"
-                        parentPostRoute="/blog/singleBlog/"
-                        viewMoreButtonText="Read More"
-                    />
-                </template>
-              </SearchableList>
-              </template>
-             </SearchableListAPIWrapper>
+          <h2>Latest Blog Posts</h2>
+          <PostListComponent
+            :listItems="state.homeData.blogPosts"
+            :canSelectListItems="true"
+            :dataLoadingMessage="BLOG_POSTS_LOADING_MESSAGE"
+            :parentRoute="PARENT_BLOG_POSTS_ROUTE"
+            :imageField="null"
+            titleField="title"
+            contentField="content"
+            postIdField="id"
+          />
         </section>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+    <div class="row pt-5">
+      <div class="col-12 pt-5">
         <section class="page-content">
-          <!--This is wrong. These need to be normal list components to show the latest posts-->
-          <SearchableListAPIWrapper
-              :apiSearchObject="buildProjectSearchApi"
-              :loadDataIndependently="true"
-              searchableListApiTitle="current projects"
-            >
-            <template #default="data">
-              <SearchableList
-                  :canSelectListItems="false"
-                  :listItems="data.dataToSearch"
-                  searchableField="title"
-                  listLabel="Current Projects"
-                  dataLoadingMessage="Loading list data..."
-                  listDirection="column"
-                  @listSearchTextChanged="data.searchListByApi"
-              >
-                <template #listItemTemplate="{data}">
-                    <SearchableListItem
-                        :hasImage="true"
-                        :hasBlurb="true"
-                        :hasViewMoreLink="true"
-                        :image="data.projectImage"
-                        :title="data.title"
-                        :blurb="data.aboutProject"
-                        :postId="data.id"
-                        :showSubmissionMessage="data.showSubmissionMessage"
-                        :submissionWasSuccessful="data.submissionWasSuccessful" 
-                        parentPostRoute="/projects/singleProject/"
-                        viewMoreButtonText="Read More"
-                    />
-                </template>
-              </SearchableList>
-              </template>
-             </SearchableListAPIWrapper>
+          <h2>Latest Project Posts</h2>
+          <PostListComponent
+            :listItems="state.homeData.projectPosts"
+            :canSelectListItems="true"
+            :dataLoadingMessage="PROJECTS_LOADING_MESSAGE"
+            :parentRoute="PARENT_PROJECT_POSTS_ROUTE"
+            titleField="title"
+            contentField="aboutProject"
+            postIdField="id"
+            imageField="projectImage"
+          />
         </section>
       </div>
     </div>
@@ -111,13 +68,19 @@
   import _ from "lodash";
 
   import LoadingSign from "./Reusable/LoadingSign.vue";
-  import SearchableList from "./Reusable/SearchableList/SearchableList.vue";
-  import SearchableListAPIWrapper from "./Reusable/SearchableList/SearchableListAPIWrapper.vue";
-  import SearchableListItem from "./Reusable/SearchableList/SearchableListItem.vue";
+  import PostListComponent from "./Reusable/PostListComponent.vue";
+
+  const PARENT_BLOG_POSTS_ROUTE = "/blog/singleBlog";
+  const PARENT_PROJECT_POSTS_ROUTE = "/projects/singleProject";
   
+  const BLOG_POSTS_LOADING_MESSAGE = "Loading blog posts...";
+  const PROJECTS_LOADING_MESSAGE = "Loading projects...";
+
   const state = reactive({
     homeData:{
       introData:{},
+      blogPosts:[],
+      projectPosts:[]
     },
   });
  
@@ -125,36 +88,6 @@
 
   onMounted(()=>{
     loadData();
-  });
-
-  const buildBlogSearchApi = (data)=>api.get({
-    url:"/api/blog/searchPosts"+(
-      data.searchText ? 
-      "?searchText="+data.searchText 
-      : 
-      "?searchText=NULL"
-    ), 
-    headers:{
-      "Content-Type":"application/json"
-    }, 
-    otherConfig:null, 
-    requestContentType:"application/json", 
-    extraDataManipulator:null 
-  });
-
-  const buildProjectSearchApi = (data)=>api.get({
-    url:"/api/projects/searchProjects"+(
-      data.searchText ? 
-      "?searchText="+data.searchText 
-      : 
-      "?searchText=NULL"
-    ), 
-    headers:{
-      "Content-Type":"application/json"
-    }, 
-    otherConfig:null, 
-    requestContentType:"application/json", 
-    extraDataManipulator:null
   });
 
   const loadData = async ()=>{
@@ -165,14 +98,37 @@
           "Content-Type":"application/json"
         },
         requestContentType:"application/json",
+      }),
+      api.get({
+        url:"/api/blog/getLatestBlogPosts", 
+        headers:{
+          "Content-Type":"application/json"
+        }, 
+        otherConfig:null, 
+        requestContentType:"application/json", 
+        extraDataManipulator:null 
+      }),
+      api.get({
+        url:"/api/projects/getLatestProjects", 
+        headers:{
+          "Content-Type":"application/json"
+        }, 
+        otherConfig:null, 
+        requestContentType:"application/json", 
+        extraDataManipulator:null 
       })
     ];
 
     Promise.all(awaitAll).then((resp)=>{
       const retrievedData = {
         introData:resp[0],
+        blogPosts:resp[1],
+        projectPosts:resp[2]
       };
+
       state.homeData.introData = retrievedData.introData.response[0];
+      state.homeData.blogPosts = retrievedData.blogPosts.response;
+      state.homeData.projectPosts = retrievedData.projectPosts.response;
     });
   }
 

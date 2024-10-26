@@ -10,8 +10,8 @@ const projects = {
     GET:{
         "/getLatestProjects":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.projectsData;
-                const hasData = db.projects.projectsData.length > 0;
+                const currentData = [...db.projects.projectsData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     /*
@@ -41,8 +41,8 @@ const projects = {
         },
         "/searchProjects":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.projectsData;
-                const hasData = db.projects.projectsData.length > 0;
+                const currentData = [...db.projects.projectsData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     /*
@@ -85,8 +85,8 @@ const projects = {
         },
         "/getProjectsByCategory":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.projectsData;
-                const hasData = db.projects.projectsData.length > 0;
+                const currentData = [...db.projects.projectsData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     /*
@@ -112,8 +112,8 @@ const projects = {
         },
         "/getProjectCategories":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.categories;
-                const hasData = db.projects.categories > 0;
+                const currentData = [...db.projects.categories];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     resolve({response:currentData});
@@ -127,8 +127,8 @@ const projects = {
         },
         "/getProjectComments":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.projects.projectComments;
-                const hasData = db.projects.projectComments.length > 0;
+                const currentData = [...db.projects.projectComments];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     const filteredData = searchPostsByFields({
@@ -148,8 +148,8 @@ const projects = {
         },
         "/getSingleProjectPost":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.projects.projectsData;
-                const hasData = db.projects.projectsData.length > 0;
+                const currentData = [...db.projects.projectsData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     const getProject = currentData.find((p)=>p.id === parseInt(data.projectId));
@@ -171,8 +171,8 @@ const projects = {
         },
         "/getSearchableFields":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.projects.searchableFieldsTypes;
-                const hasData = db.projects.searchableFieldsTypes > 0;
+                const currentData = [...db.projects.searchableFieldsTypes];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     resolve(currentData);
@@ -186,8 +186,8 @@ const projects = {
         },
         "/getProjectFieldValues":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.projects.searchableFieldsTypes;
-                const hasData = db.projects.searchableFieldsTypes > 0;
+                const currentData = [...db.projects.searchableFieldsTypes];
+                const hasData = currentData.length > 0;
 
                 const postFieldValues = getAllPostFieldValuesByFieldType({
                     itemsArray:currentData,
@@ -207,6 +207,34 @@ const projects = {
                     reject(this.HandleError({
                         resCode:404,
                         errorMessage:"Could Not Get Data For Selected Field"
+                    }));
+                }
+            });
+        },
+        "/searchProjectsByFilters":function(data){
+            return new Promise((resolve, reject)=>{
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
+
+                if(hasData){
+                    
+                    const filteredData = searchPostsByFieldsAndValues({ 
+                        arrayToSearch:currentData, 
+                        fieldsToSearchBy:data
+                    });
+
+                    if(filteredData.length < 1){
+                        reject(this.HandleError({
+                            resCode:404,
+                            errorMessage:"Could Not Find Requested Blog Post"
+                        }));
+                    }
+
+                    resolve({response:filteredData});
+                }else{
+                    reject(this.HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
                     }));
                 }
             });

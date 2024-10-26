@@ -87,6 +87,7 @@
 
     onMounted(()=>{
         currentBlogPostId.value = route.params.id;
+        console.log("Blog Post", currentBlogPostId.value);
         loadSinglePost({
             postId:currentBlogPostId.value
         });
@@ -118,6 +119,6 @@
     };
 
     const goBackToParentPage = () => {
-        router.push({path:"/blog"})
+        router.push({path:"/blog"});
     };
 </script>

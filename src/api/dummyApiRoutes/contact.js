@@ -7,8 +7,8 @@ const contactInfo = {
     GET:{
         "/getLatesContactInfo":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.about.aboutData;
-                const hasData = db.about.aboutData.length > 0;
+                const currentData = [...db.about.aboutData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     const filteredData = getPostsByLatestDates({

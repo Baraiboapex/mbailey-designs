@@ -5,14 +5,15 @@ import getPostsByLatestDates from "../dummyAPIHelpers/getPostsByLatestDates";
 import getPostsByCategory from "../dummyAPIHelpers/getPostsByCategory";
 import getAllPostFieldValuesByFieldType from "../dummyAPIHelpers/getAllPostFieldValuesByFieldType";
 import validateAllIncommingApiFields from "../dummyAPIHelpers/dummyApiFieldErrorChecker";
+import {searchPostsByFieldsAndValues} from "../dummyAPIHelpers/getPostsByFieldsAndValues";
 
 const blog = {
     GET:{
         "/getLatestBlogPosts":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
-
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
+                
                 if(hasData){
                     /*
                         This needs to be an sql stored proc
@@ -24,8 +25,6 @@ const blog = {
                             arrayToSearch:currentData,
                             howManyProjectsBackFromLatestDate:2
                         });
-                        
-                        console.log("LATEST PROJECTS", filteredData);
 
                         resolve({response:filteredData});
                     /*
@@ -34,17 +33,17 @@ const blog = {
                         for 
                     */
                 }else{
-                    // reject(this.HandleError({
-                    //     resCode:404,
-                    //     errorMessage:"Could Not Find Any Data"
-                    // }));
+                    reject(this.HandleError({
+                        resCode:404,
+                        errorMessage:"Could Not Find Any Data"
+                    }));
                 }
             });
         },
         "/searchPosts":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     /*
@@ -86,8 +85,8 @@ const blog = {
         },
         "/getPostsByCategory":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     /*
@@ -113,8 +112,8 @@ const blog = {
         },
         "/getPostCategories":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.categories;
-                const hasData = db.blog.categories.length > 0;
+                const currentData = [...db.blog.categories];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     resolve({response:currentData});
@@ -128,8 +127,8 @@ const blog = {
         },
         "/getPostComments":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.blog.blogCommentData;
-                const hasData = db.blog.blogCommentData.length > 0;
+                const currentData = [...db.blog.blogCommentData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     const filteredData = searchPostsByFields({
@@ -148,12 +147,15 @@ const blog = {
         },
         "/getSingleBlogPost":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
+
+                console.log("==========GET SINGLE BLOG POST============");
 
                 if(hasData){
                     const getPost = currentData.find((blogPost)=>blogPost.id === parseInt(data.postId));
                     if(getPost !== null){
+                        console.log("HAS DATA ==>", getPost, data.postId, currentData);
                         resolve({response:getPost});
                     }else{
                         reject(this.HandleError({
@@ -167,12 +169,14 @@ const blog = {
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
+        
+                console.log("==========GET SINGLE BLOG POST============");
             });
         },
         "/getSearchableFields":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.blog.searchableFieldsTypes;
-                const hasData = db.blog.searchableFieldsTypes > 0;
+                const currentData = [...db.blog.searchableFieldsTypes];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
                     resolve({response:currentData});
@@ -186,14 +190,14 @@ const blog = {
         },
         "/searchPostsByFilters":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
 
                 if(hasData){
-                    const filteredData = searchPostsByFields({
-                        arrayToSearch:currentData,
-                        searchText:data.searchText,
-                        fieldsToSearchBy:data.searchFields
+
+                    const filteredData = searchPostsByFieldsAndValues({ 
+                        arrayToSearch:currentData, 
+                        fieldsToSearchBy:data
                     });
 
                     if(filteredData.length < 1){
@@ -202,6 +206,8 @@ const blog = {
                             errorMessage:"Could Not Find Requested Blog Post"
                         }));
                     }
+
+                    resolve({response:filteredData});
                 }else{
                     reject(this.HandleError({
                         resCode:404,
@@ -212,8 +218,8 @@ const blog = {
         },
         "/getPostFieldValues":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = db.blog.blogData;
-                const hasData = db.blog.blogData.length > 0;
+                const currentData = [...db.blog.blogData];
+                const hasData = currentData.length > 0;
 
                 const postFieldValues = getAllPostFieldValuesByFieldType({
                     itemsArray:currentData,

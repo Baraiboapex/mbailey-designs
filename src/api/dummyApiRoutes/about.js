@@ -10,12 +10,16 @@ const about = {
                 const hasData = db.about.aboutData.length > 0;
                 
                 if(hasData){
+
                     const filteredData = getPostsByLatestDates({
                         arrayToSearch:currentData,
                         howManyProjectsBackFromLatestDate:1
                     });
+
+                    console.log(filteredData);
                     
                     resolve({response:filteredData});
+                    
                 }else{
                     // reject(HandleError({
                     //     resCode:404,

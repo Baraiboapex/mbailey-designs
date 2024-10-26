@@ -12,7 +12,7 @@
                         <div v-for="groupTab in state.groupTabs" :key="groupTabs.id" class="app-search-group-tab" @click="()=>selectGroupTab(groupTab)">
                             <span>{{ groupTab.title }}</span>
                         </div>
-                        <div v-if="showSelectableTabs" class="search-tabs-data-container">
+                        <div v-if="showSelectableTabs" class="p-2 search-tabs-data-container">
                             <!--NOTE This is wrong! This needs to be a searchable list-->
                             <SearchableList
                                 dataLoadingMessage=""
@@ -26,18 +26,19 @@
                                 :submissionWasSuccessful="true"    
                             >
                             <template #listItemTemplate="data">
-
+                                <div class="d-flex flex-row">
+                                    <div class="d-flex justify-content-center">
+                                        {{ data.fieldName }}
+                                    </div>
+                                </div>
                             </template>
                             </SearchableList>
-                            <div v-for="tab in state.searchableTabs[state.selectedTabs]" :key="tab.id" class="search-tabs-data-tap" @click="()=>selectChildTab(tab)">
-                                {{ tab.title }}
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div v-if="hasSelectedTabs" class="col-12">
+                <div v-if="hasSelectedTabs" class="col-12 ">
                     <div v-for="selectedTab in selectedTabs" @click="()=>removeSelectedTab(selectedTab)" :key="selectedTab.id" class="app-search-group-tab" >
                         <span>{{ selectedTab.title }}</span>
                     </div>
@@ -58,6 +59,18 @@
     </div>
 </template>
 <script setup>
+    /*
+        NOTES ON HOW THIS COMPONENT WORKS:
+
+        1.) Select a "data field tab" first to specifiy which field you want to filter by
+        2.) Select a value that you want to filter by (this where the filtering actually takes place)
+        3.) The component can be configured to use eith an API to filter OR to just filter on the FE
+
+        P.S. the design of this filter tab needs to be set up to where the UI isn't too crowded when
+        the user selects groups of searchable values based on the parent search tabs. Find a way 
+        to make the search groups highly presentable so that the user experience remains clean
+        and not frusterating.
+    */
     import { reactive, onMounted, computed, watch } from "vue";
 
     import SearchableList from "./SearchableList.vue";
@@ -141,6 +154,7 @@
             showPostCommentDataErrorMessage.value = true;
         });
     }
+
 
     const filterDataWithTabs = () => {
 

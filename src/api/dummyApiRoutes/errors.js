@@ -7,7 +7,7 @@ const error = {
     GET:{
         "/getLatestErrors":function(data){
             return new Promise((resolve,reject)=>{
-                const currentData = db.errors.errorData;
+                const currentData = [...db.errors.errorData];
                 const hasData = db.errors.errorData.length > 0;
 
                 if(hasData){

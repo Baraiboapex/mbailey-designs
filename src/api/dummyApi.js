@@ -1,6 +1,6 @@
 import formatHelper from "./apiHelpers/dataFromatHelpers";
 import callDummyAPI from "./dummyApiRouter";
-
+import { checkIfFieldNotAllowedAsArray } from "./dummyAPIHelpers/apiQueryFieldsConfig";
 function callApi({
     url,
     body,
@@ -19,6 +19,20 @@ function callApi({
         if(body) currentConfig = {...currentConfig, body};
         if(headers) currentConfig = {...currentConfig, headers};
         if(otherConfig) currentConfig = {...currentConfig, ...otherConfig};
+
+        console.log(
+            requestContentType,
+                extraDataManipulator,
+            {
+                url,
+                body,
+                headers,
+                method,
+                otherConfig,
+                requestContentType,
+                extraDataManipulator
+            }
+        )
 
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
@@ -41,7 +55,7 @@ function callApi({
 
 function dummyFetch(url, config){
     return new Promise(async (resolve, reject)=>{
-
+        
         window.setTimeout(async ()=>{
             try{
                 const callAPI = await callDummyAPI({
@@ -65,6 +79,7 @@ function dummyFetch(url, config){
                     });
                 }
             }catch(err){
+                console.log(err);
                 reject({
                     ok:false,
                     message:"Could not get data"
@@ -101,11 +116,18 @@ export default {
             const searchParamsQueryObject = {};
 
             for (const [key, value] of urlParams.entries()) {
+                console.log(key);
                 if(!key.includes("/")){
-                    searchParamsQueryObject[key] = value;
+                    if(checkIfFieldNotAllowedAsArray(key)){
+                        searchParamsQueryObject[key] = value
+                    }else{
+                        searchParamsQueryObject[key] = value.split(",");
+                    }
                 }
             }
-            
+
+            console.log(searchParamsQueryObject);
+
             const hasSearchParamEntries = Object.keys(searchParamsQueryObject).length > 0;
             
             const data = await callApi({
@@ -116,6 +138,8 @@ export default {
                 requestContentType,
                 extraDataManipulator
             });
+
+            console.log("DATA", data);
 
             return data;   
         }catch(err){

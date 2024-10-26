@@ -22,8 +22,6 @@
 <script setup>
     import { ref, computed, onMounted } from "vue";
     
-    import LoadingSign from "../LoadingSign.vue";
-    
     const props = defineProps({
         apiSearchObject:Object,
         initiatSearchByButtonClick:Boolean,
