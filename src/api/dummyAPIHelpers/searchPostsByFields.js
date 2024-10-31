@@ -19,7 +19,6 @@ function searchPostsByFields({ searchText, arrayToSearch, fieldsToSearchBy }) {
       arrayToSearch.forEach((item) => {
         if (fieldsToSearchBy !== null && fieldsToSearchBy !== undefined) {
           fieldsToSearchBy.forEach((field) => {
-            console.log(item[field]);
             if(item[field].length){
               item.field.forEach((entryItem)=>{
                 selectedEntries.push(entryItem);
@@ -38,7 +37,6 @@ function searchPostsByFields({ searchText, arrayToSearch, fieldsToSearchBy }) {
           });
         }
       });
-      console.log("ENTRIES", selectedEntries);
       return selectedEntries;
     }catch(err){
       console.log(err);

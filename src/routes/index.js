@@ -13,21 +13,21 @@ const routes = [
         meta:{},
         name:"About"
     },
-    {
-        path:"/blog",
-        name:"Blog",
-        meta:{},
-        children:[
-            {
-                path:"",
-                component:async()=>await import("../components/BlogPage.vue"),
-            },
-            {
-                path:"singleBlog/:id",
-                component:async()=>await import("../components/SingleBlogPost.vue")
-            }
-        ]
-    },
+    // {
+    //     path:"/blog",
+    //     name:"Blog",
+    //     meta:{},
+    //     children:[
+    //         {
+    //             path:"",
+    //             component:async()=>await import("../components/BlogPage.vue"),
+    //         },
+    //         {
+    //             path:"singleBlog/:id",
+    //             component:async()=>await import("../components/SingleBlogPost.vue")
+    //         }
+    //     ]
+    // },
     {
         path:"/projects",
         name:"Projects",

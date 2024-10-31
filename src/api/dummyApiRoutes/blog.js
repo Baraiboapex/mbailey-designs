@@ -150,12 +150,9 @@ const blog = {
                 const currentData = [...db.blog.blogData];
                 const hasData = currentData.length > 0;
 
-                console.log("==========GET SINGLE BLOG POST============");
-
                 if(hasData){
                     const getPost = currentData.find((blogPost)=>blogPost.id === parseInt(data.postId));
                     if(getPost !== null){
-                        console.log("HAS DATA ==>", getPost, data.postId, currentData);
                         resolve({response:getPost});
                     }else{
                         reject(this.HandleError({
@@ -169,15 +166,13 @@ const blog = {
                         errorMessage:"Could Not Find Any Data"
                     }));
                 }
-        
-                console.log("==========GET SINGLE BLOG POST============");
             });
         },
         "/getSearchableFields":function(data){
             return new Promise((resolve, reject)=>{
                 const currentData = [...db.blog.searchableFieldsTypes];
                 const hasData = currentData.length > 0;
-
+                
                 if(hasData){
                     resolve({response:currentData});
                 }else{

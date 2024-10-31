@@ -1,6 +1,6 @@
 import formatHelper from "./apiHelpers/dataFromatHelpers";
 import callDummyAPI from "./dummyApiRouter";
-import { checkIfFieldNotAllowedAsArray } from "./dummyAPIHelpers/apiQueryFieldsConfig";
+import { checkIfFieldIsNullable, checkIfFieldNotAllowedAsArray, checkIfNullableQueryFieldIsNull } from "./dummyAPIHelpers/apiQueryFieldsConfig";
 function callApi({
     url,
     body,
@@ -12,27 +12,13 @@ function callApi({
 }){
     return new Promise(async (resolve, reject)=>{
         let currentConfig = {
-            url,
+            url
         }
 
         if(method) currentConfig = {...currentConfig, method};
         if(body) currentConfig = {...currentConfig, body};
         if(headers) currentConfig = {...currentConfig, headers};
         if(otherConfig) currentConfig = {...currentConfig, ...otherConfig};
-
-        console.log(
-            requestContentType,
-                extraDataManipulator,
-            {
-                url,
-                body,
-                headers,
-                method,
-                otherConfig,
-                requestContentType,
-                extraDataManipulator
-            }
-        )
 
         dummyFetch(url, currentConfig)
         .then((resp)=>getResponseData({
@@ -85,8 +71,7 @@ function dummyFetch(url, config){
                     message:"Could not get data"
                 });
             }
-            
-        },1500);
+        },100);
     });
 }
 
@@ -116,17 +101,26 @@ export default {
             const searchParamsQueryObject = {};
 
             for (const [key, value] of urlParams.entries()) {
-                console.log(key);
                 if(!key.includes("/")){
                     if(checkIfFieldNotAllowedAsArray(key)){
-                        searchParamsQueryObject[key] = value
+                        if(checkIfFieldIsNullable(key)){
+                            searchParamsQueryObject[key] = checkIfNullableQueryFieldIsNull(value);
+                        }else{
+                            if(value !== "NULL"){
+                                searchParamsQueryObject[key] = value;
+                            }
+                        }
                     }else{
-                        searchParamsQueryObject[key] = value.split(",");
+                        if(checkIfFieldIsNullable(key)){
+                            searchParamsQueryObject[key] = checkIfNullableQueryFieldIsNull(value.split(","));
+                        }else{
+                            if(value !== "NULL"){
+                                searchParamsQueryObject[key] = value.split(",");
+                            }
+                        }
                     }
                 }
             }
-
-            console.log(searchParamsQueryObject);
 
             const hasSearchParamEntries = Object.keys(searchParamsQueryObject).length > 0;
             

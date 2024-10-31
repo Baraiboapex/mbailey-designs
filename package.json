@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "uuid": "^10.0.0",

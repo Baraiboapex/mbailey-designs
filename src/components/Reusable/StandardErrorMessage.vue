@@ -1,14 +1,14 @@
 <template>
     <div v-show="showErrorMessage">
-        <div class="d-flex align-items-between flex-column app-error-message">
-            <h3>{{ errorMessageText }}</h3>
+        <div class="d-flex align-items-center w-auto flex-row app-error-message">
+            <span>{{ errorMessageText }}</span>
             <div>
                 <svg
                     xmlns="http://www.w3.org/2000/svg" 
                     width="100" 
                     height="100" 
                     fill="currentColor" 
-                    style="color:red;" 
+                    style="color:rgb(83, 30, 30);" 
                     class="bi bi-x" 
                     viewBox="0 0 16 16"
                 >

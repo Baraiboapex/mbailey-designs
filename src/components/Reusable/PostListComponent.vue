@@ -2,16 +2,19 @@
     <div class="row">
         <div class="col-12">
             <div v-if="!showLoading" class="d-flex flex-column">
-                <div v-for="listItem in listItems" :key="listItem.id" class="d-flex flex-column">
-                    <div class="p-2">
-                        <img v-if="listItem[imageField]" :src="listItem[imageField]" class="list-item-image"/>
+                <div v-for="listItem in listItems" :key="listItem.id" class="d-flex flex-column item-frame mt-2 mb-2 p-4">
+                    <div class="p-2 d-flex justify-content-center">
+                        <img alt="image" v-if="listItem[imageField]" :src="listItem[imageField]" class="post-image"/>
                     </div>
                     <hr/>
                     <div class="p-2 d-flex flex-column">
                         <h3 class="list-item-title">{{ listItem[titleField] }}</h3>
-                        <p class="list-item-blurb text-dark">{{ listItem[contentField] }}</p>
+                        <p class="list-item-blurb text-light">{{ listItem[contentField] }}</p>
                     </div>
-                    <a @click="(event)=>navigateToPostPage(event, listItem)" class="list-item-view-more-button">View Post</a>
+                    <button type="button" @click="(event)=>navigateToPostPage(event, listItem)" class="btn app-button w-25">
+                        Read More
+                    </button>
+                    <hr/>
                 </div> 
             </div>
             <div v-else="showLoading" class="d-flex flex-row">

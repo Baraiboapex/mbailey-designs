@@ -1,13 +1,14 @@
 <template>
     <div v-show="showSuccessMessage">
-        <div class="d-flex align-items-between flex-column app-success-message">
-            <h3>{{ successMessageText }}</h3>
+        <div class="d-flex align-items-center w-auto flex-row app-success-message">
+            <span>{{ successMessageText }}</span>
             <div>
                 <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     width="100" 
                     height="100" 
-                    fill="currentColor" 
+                    fill="currentColor"
+                    style="color:rgb(20, 59, 23)"
                     class="bi bi-check" 
                     viewBox="0 0 16 16"
                 >

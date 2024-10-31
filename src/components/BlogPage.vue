@@ -7,23 +7,29 @@
     <div class="col-12">
         <section class="page-content">
           <div>
-            <SearchableListAPIWrapper
-              :loadDataIndependently="true"
-              :apiSearchObject="buildBlogSearchApi"
-              @postsLoaded="checkBlogPostsLoaded"
+            <SearchTabsBar
+              searchTabsBarTitle="Please Select A Search Filter"
+              searchTabsSearchTextBarLabel="Search Blog Post Filters..."
+              searchTabsCategoriesLabel="Blog Post Filter Categories"
+              :getSearchableFieldsApiUrl="GET_SEARCHABLE_FIELDS_API_URL"
+              :getSearchableDataApiUrl="GET_SEARCHABLE_DATA_API_URL"
+              :searchDataApiUrl="SEARCH_DATA_API_URL"
+              :showListLoadingSign="false"
+              :apiObject="api"
             >
-            <template #default="slapidata">
+              <template #tabsFrame="slapidata">
+                <div class="mt-4">
               <SearchableList
                   searchableField="title"
                   listLabel="Current Blog Posts"
                   dataLoadingMessage="Loading list data..."
                   listDirection="column"
                   :canSelectListItems="false"
-                  :listItems="slapidata.dataToSearch"
-                  :showSubmissionMessage="slapidata.showSubmissionMessage"
-                  :submissionWasSuccessful="slapidata.submissionWasSuccessful" 
-                  :showListLoadingSignOnSearch="slapidata.showListLoadingSignOnSearch"
-                  @listSearchTextChanged="slapidata.searchListByApi"
+                  :listItems="slapidata.filteredList"
+                  :showSubmissionMessage="false"
+                  :submissionWasSuccessful="true"
+                  :showListLoadingSignOnSearch="!slapidata.loadingForSearch"
+                  @listSearchTextChanged="slapidata.searchFunction"
               >
                 <template #listItemTemplate="{data}">
                   <SearchableListItem
@@ -38,33 +44,22 @@
                     />
                 </template>
               </SearchableList>
+            </div>
               </template>
-             </SearchableListAPIWrapper>
+            </SearchTabsBar>
           </div>
         </section>
       </div>
   </div>
 </template>
 <script setup>
-import api from "../api/dummyApi.js";
+  import api from "../api/dummyApi.js";
 
-import SearchableList from "./Reusable/SearchableList/SearchableList.vue";
-import SearchableListAPIWrapper from "./Reusable/SearchableList/SearchableListAPIWrapper.vue";
-import SearchableListItem from "./Reusable/SearchableList/SearchableListItem.vue";
+  import SearchableList from "./Reusable/SearchableList/SearchableList.vue";
+  import SearchTabsBar from "./Reusable/SearchableList/SearchTabsBar.vue";
+  import SearchableListItem from "./Reusable/SearchableList/SearchableListItem.vue";
 
-const buildBlogSearchApi = (data)=>api.get({
-  url:"/api/blog/searchPosts"+(
-    data.searchText ? 
-    "?searchText="+data.searchText 
-    : 
-    "?searchText=NULL"
-  ), 
-  headers:{
-    "Content-Type":"application/json"
-  }, 
-  otherConfig:null, 
-  requestContentType:"application/json", 
-  extraDataManipulator:null
-});
-
+  const GET_SEARCHABLE_FIELDS_API_URL = "/api/blog/getSearchableFields";
+  const GET_SEARCHABLE_DATA_API_URL = "/api/blog/getPostFieldValues"; 
+  const SEARCH_DATA_API_URL = "/api/blog/searchPostsByFilters";
 </script>

@@ -2,7 +2,7 @@
     <div class="d-flex flex-column justify-content-between">
         <div class="d-flex flex-column justify-content-between">
             <div class="d-flex flex-column justify-content-between">
-                <button v-if="initiatSearchByButtonClick">
+                <button type="button" v-if="initiatSearchByButtonClick">
                     {{ searchButtonText }}
                 </button>
                 <div class="w-100 d-flex flex-column">
@@ -55,8 +55,6 @@
             searchListByApi({
                 searchText:""
             });
-        }else{
-            console.log("NOPE");
         }
     });
 
@@ -76,8 +74,6 @@
     const searchListByApi = (data) => {
         const {searchText} = data;
 
-        console.log("TEST THIS FETCH LIST LOADER!!!!!");
-
         submissionWasSuccessful.value = true;
         showLoadingSign.value = true;
         showSubmissionMessage.value = false;
@@ -85,13 +81,11 @@
         props.apiSearchObject({
             searchText
         }).then((data)=>{
-            console.log(data);
             dataToSearch.value = data.response;
             submissionWasSuccessful.value = true;
             showLoadingSign.value = false;
             emittedEvents("postsLoaded",true);
         }).catch((err)=>{
-            console.log("SEARCH ERROR!!!",err);
             showError.value = true;
             showLoadingSign.value = false;
             showSubmissionMessage.value = true;

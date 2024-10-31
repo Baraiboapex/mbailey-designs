@@ -2,18 +2,21 @@
     <div class="d-flex felx-column">
         <div v-if="postCommentsHaveNoErrors" class="w-100">
             <div v-if="postCommentsLoaded" class="d-flex w-100 flex-column p-2">
-                <div class="post-comment-header d-flex flex-row">
+                <div class="post-comment-header d-flex flex-column flex-sm-column flex-md-row flex-lg-row w-100 mb-4">
                     <h3 class="mr-auto">Comments</h3>
-                    <button 
-                        v-show="!showCommentAddDialog"
-                        class="btn app-button" 
-                        @click="showAddComment"
-                    >
-                        Submit Comment
-                    </button>
+                    <div class="flex-grow-1 d-flex justify-content-start justify-content-sm-start justify-content-md-end justify-content-lg-end">
+                        <button 
+                            type="button"
+                            v-show="!showCommentAddDialog"
+                            class="btn app-button mt-3 mt-sm-3 mt-md-0 mt-lg-0" 
+                            @click="showAddComment"
+                        >
+                            Submit Comment
+                        </button>
+                    </div>
                 </div>
-                <div v-if="showCommentAddDialog" class="add-post-comment-container">
-                    <div class="d-flex flex-column justify-content-between p-4 add-comment-form">
+                <div v-if="showCommentAddDialog" class="add-post-comment-container item-frame p-1 p-sm-1 p-md-4 p-lg-4">
+                    <div class="d-flex flex-column justify-content-between p-1 p-sm-1 p-md-4 p-lg-4 add-comment-form">
                         <div class="row">
                             <div class="col-12">
                                 <h3>Submit Comment</h3>
@@ -25,14 +28,14 @@
                                     all our checks it will be added.
                                 </p>
                             </div>
-                            <div class="col-12 d-flex flex-column justify-content-between">
+                            <div class="col-12 d-flex flex-column justify-content-between mb-3">
                                 <StandardSuccessMessage 
                                     :showMessage="showPostCommentSubmitSuccessMessage" 
-                                    successMessageText="Comment submission request sent successfully"
+                                    successMessageText="Submission Request Sent!"
                                 />
                                 <StandardErrorMessage 
                                     :showMessage="showPostCommentSubmitErrorMessage"
-                                    errorMessageText="Comment submission could not be sent"
+                                    errorMessageText="Submission Request Not Sent"
                                 />
                             </div>
                         </div>
@@ -67,15 +70,18 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <div v-if="!postcommentRequestSending" class="d-flex flex-row">
+                                <div v-if="!postcommentRequestSending" class="d-flex flex-row mt-3">
                                     <button
+                                        type="button"
                                         class="btn app-submit-button"
                                         @click="addPostComment"
                                     >
-                                        Submit Comment Request
+                                        Submit Comment
                                     </button>
+                                    <span>&nbsp;&nbsp;&nbsp;</span>
                                     <button
-                                        class="btn app-submit-button"
+                                        type="button"
+                                        class="btn app-button"
                                         @click="hideAddComment"
                                     >
                                         Cancel
@@ -94,14 +100,19 @@
                 <div class="add-post-comment-container w-100 d-flex flex-column">
                     <div class="mt-2 row post-comments-container">
                         <div class="col-12">
-                            <div v-for="comment in state.comments" class="app-comment">
-                                <div class="p-4 d-flex flex-column flex-wrap justify-content-between">
-                                    <div class="d-flex flex-row w-100">
-                                        <div class="d-flex justify-content-start">
-                                            <h4 class="comment-title">{{ comment.commenter }}</h4>
-                                        </div>
-                                        <div class="d-flex justify-content-end w-100">
-                                            <h4>Date Posted : {{ comment.datePosted }}</h4>
+                            <div v-for="comment in state.comments" class="app-comment item-frame p-4">
+                                <div class="d-flex flex-column">
+                                    <h5 class="comment-title">{{ comment.commenter }}</h5>
+                                    <div class="d-flex flex-column w-100 mb-4">
+                                        <div class="d-flex flex-row align-items-center w-100">
+                                            <strong>Date Posted : </strong>
+                                            <div class="m-2">
+                                                <FormatComponent
+                                                    formatTypeName="datePosted"
+                                                    :inputString="comment.datePosted"
+                                                    :formatKeyMethod="textFormatterMethod"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                     <p class="comment-paragraph">{{ comment.content }}</p>
@@ -120,6 +131,8 @@
         </div>
         <div v-else>
             <StandardErrorMessage
+                :isPermanent="true"
+                :showMessage="true"
                 errorMessageText="Could not load post comments"
             />
         </div>
@@ -134,12 +147,14 @@
         textRulesNames,
         DEFAULT_TEXT_VALIDATION_OBJECT_VALUE
     } from "../../helpers/inputValidation/inputValidator.js";
+    import {textFormatterMethod} from "../../helpers/formatHelpers/formattingObjects.js";
 
     import api from "../../api/dummyApi";
 
     import LoadingSign from "./LoadingSign.vue";
     import StandardErrorMessage from "./StandardErrorMessage.vue";
     import StandardSuccessMessage from "./StandardSuccessMessage.vue";
+    import FormatComponent from "./FormatComponent.vue";
 
     const props = defineProps({
         apiGetRequestRoute:String,
@@ -220,7 +235,6 @@
     const loadPostComments = ({
         parentPostId
     }) => {
-        console.log(props.apiPostRequestRoute, props.commentParentPostIdFieldName);
         api.get({
             url:props.apiGetRequestRoute + ("?"+props.commentParentPostIdFieldName+"="+parentPostId),
             headers:{
@@ -229,7 +243,6 @@
             otherConfig:null,
             requestContentType:"application/json",
         }).then((data)=>{
-            console.log(data.response);
             state.comments = data.response;
             postCommentsHaveNoErrors.value = true;
             postCommentsLoaded.value = true;

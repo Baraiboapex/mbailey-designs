@@ -1,12 +1,12 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row mt-0 mb-0 pt-0 pb-0">
             <div class="col-12">
                 <Navbar/>
             </div>
         </div>
-        <div class="row pt-0 mt-0 mb-0">
-            <div class="col-12">
+        <div class="row pt-0 mt-5 mb-0">
+            <div class="col-12 mt-5">
                 <RouterView/> 
             </div>
         </div>

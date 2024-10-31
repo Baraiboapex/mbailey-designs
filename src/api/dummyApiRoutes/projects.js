@@ -5,6 +5,7 @@ import getPostsByLatestDates from "../dummyAPIHelpers/getPostsByLatestDates";
 import getPostsByCategory from "../dummyAPIHelpers/getPostsByCategory";
 import getAllPostFieldValuesByFieldType from "../dummyAPIHelpers/getAllPostFieldValuesByFieldType";
 import validateAllIncommingApiFields from "../dummyAPIHelpers/dummyApiFieldErrorChecker";
+import {searchPostsByFieldsAndValues} from "../dummyAPIHelpers/getPostsByFieldsAndValues";
 
 const projects = {
     GET:{
@@ -56,8 +57,6 @@ const projects = {
                             arrayToSearch:currentData,
                             searchText:data.searchText
                         });
-
-                        console.log("PROJECTS SEARCH RESULTS", filteredData, data.searchText);
 
                         if(filteredData.length < 1){
                             reject(this.HandleError({
@@ -175,7 +174,7 @@ const projects = {
                 const hasData = currentData.length > 0;
 
                 if(hasData){
-                    resolve(currentData);
+                    resolve({response:currentData});
                 }else{
                     reject(this.HandleError({
                         resCode:404,
@@ -186,7 +185,7 @@ const projects = {
         },
         "/getProjectFieldValues":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = [...db.projects.searchableFieldsTypes];
+                const currentData = [...db.projects.projectsData];
                 const hasData = currentData.length > 0;
 
                 const postFieldValues = getAllPostFieldValuesByFieldType({
@@ -213,7 +212,7 @@ const projects = {
         },
         "/searchProjectsByFilters":function(data){
             return new Promise((resolve, reject)=>{
-                const currentData = [...db.blog.blogData];
+                const currentData = [...db.projects.projectsData];
                 const hasData = currentData.length > 0;
 
                 if(hasData){
