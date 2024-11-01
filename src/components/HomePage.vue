@@ -1,10 +1,16 @@
 
 <template>
   <div class="p-2">
+    <div class="row item-frame mt-5">
+      <div class="col-12">
+        <h1 class="mt-2">Home</h1>
+        <p class="mt-4 mb-2">Hello! Welcome to mbailey-designs! chances are you were given this link after meeting me in person, or reciving a job application I filled out so feel free to stick around and browse!</p>
+      </div>
+    </div>
     <div class="row p-0">
       <div class="col-12 p-0">
         <section class="page-content">
-          <div v-if="introDataLoaded" class="item-frame">
+          <!-- <div v-if="introDataLoaded" class="item-frame">
               <div class="row">
                 <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex align-items-center justify-content-center pt-5 pb-4">
                   <img class="owner-image" :src="state.homeData.introData.ownerImage"/>
@@ -22,7 +28,7 @@
               :showLoadingSign="!introDataLoaded"
               loadingMessageText="Loading intro data..."
             />
-          </div>
+          </div> -->
         </section>
       </div>
     </div>
@@ -92,13 +98,13 @@
 
   const loadData = async ()=>{
     const awaitAll = [
-      api.get({
-        url:"/api/about/getLatestAboutInfo",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        requestContentType:"application/json",
-      }),
+      // api.get({
+      //   url:"/api/about/getLatestAboutInfo",
+      //   headers:{
+      //     "Content-Type":"application/json"
+      //   },
+      //   requestContentType:"application/json",
+      // }),
       // api.get({
       //   url:"/api/blog/getLatestBlogPosts", 
       //   headers:{
@@ -121,12 +127,12 @@
 
     Promise.all(awaitAll).then((resp)=>{
       const retrievedData = {
-        introData:resp[0],
+        // introData:resp[0],
         //blogPosts:resp[1],
-        projectPosts:resp[1]
+        projectPosts:resp[0]
       };
       
-      state.homeData.introData = retrievedData.introData.response[0];
+      //state.homeData.introData = retrievedData.introData.response[0];
       //state.homeData.blogPosts = retrievedData.blogPosts.response;
       state.homeData.projectPosts = retrievedData.projectPosts.response;
 

@@ -5,6 +5,7 @@
           <div v-if="introDataLoaded" class="p-2">
               <div class="row">
                 <div class="col-12 item-frame">
+                  <h1 class="mt-2 mb-4">About</h1>
                   <div class="row p-2">
                     <div class="col-12 p-2 col-sm-12 col-md-6 col-lg-6 col-xl-6 d-flex align-items-center justify-content-center">
                       <img class="owner-image" :src="state.introData.ownerImage"/>

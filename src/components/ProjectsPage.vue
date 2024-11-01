@@ -1,9 +1,12 @@
 <template>
     <div class="row">
-      <div class="col-12">
-        <h1 class="page-title">Projects</h1>
-        <p> Here are some of the projects I've built in my free-time or for freelance clients. All of my projects are higly focused on cross-browser compatability, and mobile responsiveness!</p>
-        <hr/>
+      <div class="col-12 item-frame mt-5 mb-4">
+        <section class="p-2">
+          <div class="m-2">
+          <h1 class="mt-2">Projects</h1>
+          <p class="mt-4 mb-2"> Here are some of the projects I've built in my free-time or for freelance clients. All of my projects are higly focused on cross-browser compatability, and mobile responsiveness!</p>
+          </div>
+        </section>
       </div>
       <div class="col-12">
         <section class="p-2">

@@ -19,7 +19,7 @@ const projects = {
             datePostedIso:new Date("07/12/2024 1:31 pm.").toISOString(),
             datePosted:dayjs(new Date("07/12/2024 1:31 pm.").toISOString()).format("MM/DD/YYYY"),
             title:"GNBC Japanese Class Tools Suite",
-            projectImage:"src/assets/images/japanese-class-suite.png",
+            projectImage:"/assets/images/japanese-class-suite.png",
             aboutProject:"For my church, I built a handful of tools for our japanese class using node.js, google apps scripts, and Vue.js!",
             projectLink:null,
             categories:[
@@ -43,7 +43,7 @@ const projects = {
             title:"Jax Tides",
             datePostedIso:new Date("07/12/2024 1:31 pm.").toISOString(),
             datePosted:dayjs(new Date("07/14/2024 1:31 pm.").toISOString()).format("MM/DD/YYYY"),
-            projectImage:"src/assets/images/Screenshot_2024-10-30_004137.png",
+            projectImage:"/assets/images/Screenshot_2024-10-30_004137.png",
             aboutProject:"This is a neat little application that I made with React.js while using the NOAA tides API for data!",
             projectLink:"https://baraiboapex.github.io/jax-tides",
             categories:[

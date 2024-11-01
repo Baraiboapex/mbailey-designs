@@ -79,7 +79,7 @@
                         <div class="d-flex flex-row flex-wrap p-0 item-frame m-2">
                             <button
                                 type="button"
-                                class="m-2 app-search-group-tab btn app-button" 
+                                class="m-2 app-search-group-tab btn app-button d-flex align-items-center" 
                                 v-for="selectedTab in state.searchQueryObject[state.selectedGroupTabName]" 
                                 @click="()=>removeSelectedChildTab(selectedTab)" 
                                 :key="selectedTab" 
@@ -94,6 +94,16 @@
                                         :formatKeyMethod="textFormatterMethod"
                                     />
                                 </div>
+                                <svg v-if="!submissionSuccessful"
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    width="30" 
+                                    height="30" 
+                                    fill="currentColor" 
+                                    class="bi bi-x" 
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
+                                </svg>
                             </button>
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand-md fixed-top navbar-dark w-100">
         <div class="d-flex flex-row align-items-center w-75 nav-brand-container">
-            <img src="../../assets/mpb-logo.svg" height="77" width="77" class="navbar-image" @click="goHome"/>
+            <img src="/assets/mpb-logo.svg" height="77" width="77" class="navbar-image" @click="goHome"/>
             <span>&nbsp;&nbsp;</span>
             <span class="text-wrap">matthew p bailey designs</span>
         </div>
